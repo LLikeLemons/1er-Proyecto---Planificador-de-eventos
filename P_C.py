@@ -12,37 +12,44 @@ def practica_conduccion():
     st.set_page_config(layout="wide")
     col0.header("PLANIFICACIÓN DE EVENTO",divider="red")
     col2.subheader("Entrenamientos: Práctica de Conducción", divider="red")
-    
+    inst = 0
     with col4:
         repeticion = st.radio("Tipo de Horario y Repetición",
                     ["Evento único", "Repetición semanal", "Repetición mensual", "Rango de días"],
                     index=0, width="stretch", horizontal=True)
     
-    
+    cono = col6.number_input("Cantidad de conos", value=0, min_value=0)
+    inst = col6.number_input("Cantidad de Instructores", value=0, min_value=0,help="Debe haber al menos un instructor por vehiculo" \
+        " interceptor")
+    with col7:        
+        z4 = st.number_input("Cantidad de vehiculos Z4",value=0, min_value=0)
+        inter = st.number_input("Cantidad de vehiculos Interceptor", value=inst, min_value=inst,)
+        mary = st.number_input("Cantidad de motos Mary-Policia", value=0, min_value=0)
     with col6:
-        st.number_input("Cantidad de conos", value=0, min_value=0)
-        st.number_input("Cantidad de Instructores", value=0, min_value=0)
-        st.selectbox("Lugar de practica", ["Pista de automovilismo", "Centro de entrenamiento", "Academia Policial"],
+        
+        option = ["Pista de automovilismo", "Centro de entrenamiento", "Academia Policial"]
+        if inter > 0:
+            option = [option[0]]
+        place = st.selectbox("Lugar de practica", option,
                      help="Por cuestiones de seguridad los vehiculos Interceptor solo tienen permitido manejarse \n" \
                      "en la pista de automovilismo")
-    with col7:        
-        st.number_input("Cantidad de vehiculos Z4",value=0, min_value=0)
-        st.number_input("Cantidad de vehiculos Interceptor", value=0, min_value=0)
-        st.number_input("Cantidad de motos Mary-Policia", value=0, min_value=0)
+    
     
     if repeticion == "Evento único":
         date_input = col8.date_input("Fecha", value="today", min_value="today")
         time_input = col8.time_input("Hora de inicio")
         time_input = col8.time_input("Hora de conclusión")
+
     elif repeticion == "Rango de días":
         date_input = col8.date_input("Fecha", value=["today","today"], min_value="today")
         time_input = col8.time_input("Hora de inicio")
         time_input = col8.time_input("Hora de conclusión")
+        
+
     elif repeticion == "Repetición semanal":
         col9, col10 = col8.columns([0.3,0.7])
         prechecks = [0,0,0,0,0,0,0]
         validations = [0,0,0,0,0,0,0]
-
         first_date = col10.date_input("Fecha", value="today", min_value="today")
         time_input = col10.time_input("Hora de inicio")
         time_input = col10.time_input("Hora de conclusión")
@@ -73,6 +80,7 @@ def practica_conduccion():
                     next_date += timedelta(days=7)
                     date_input.append(next_date)
         st.text(date_input)
+
     elif repeticion == "Repetición mensual":            
         first_date = col8.date_input("Fecha", value="today", min_value="today")
         time_input = col8.time_input("Hora de inicio")
@@ -84,15 +92,17 @@ def practica_conduccion():
             next_date += timedelta(months=1)
             date_input.append(next_date)
 
-   
-    smart_dates_sorter(0,len(date_input)-1,date_input)
-    new_event = Event(date_input,time_input,"Práctica de Conducción")
+    if type(date_input) == list:
+        smart_dates_sorter(0,len(date_input)-1,date_input)
+    dict = {
+        "Conos": cono,
+        "Instructores": inst,
+        "Moto Mary-Policia": mary,
+        "Vehiculo Interceptor": inter,
+        "Vehiculo Z4": z4
+    }
+    new_event = Event(date_input,time_input,"Práctica de Conducción",dict,place)
 
-    col1.markdown("""<div style='
-                  color: red;
-                  border: 4px solid red;'>
-                  {{st.buttom("Amaterasu")}}
-                  </div>""",unsafe_allow_html=True)
     
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")

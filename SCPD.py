@@ -7,7 +7,7 @@ from P_C import practica_conduccion
 
 resources = {
     "AMP": 50,
-    "Bicicletaas": 30,
+    "Bicicletas": 30,
     "Blancos de práctica": 30,
     "Chalecos Antibalas":100,
     "Entrenadores de Defensa Personal":5,
@@ -35,7 +35,7 @@ def main():
     st.set_page_config(layout="wide")
     
     if st.session_state.pagina_actual == "inicio":
-        st.session_state.b_practica_conduccion = False
+        st.session_state.practica_conduccion = False
 
         with st.sidebar:
             st.header("MENU", divider="red")
@@ -52,7 +52,7 @@ def main():
                 cambiar_pagina("entrenamientos")
             if st.button("Práctica de Conducción", use_container_width=True):
                 cambiar_pagina("entrenamientos")
-                st.session_state.b_practica_conduccion = True
+                st.session_state.practica_conduccion = True
             if st.button("Entrenamiento Fisico", use_container_width=True):
                 cambiar_pagina("entrenamientos")
 
@@ -90,7 +90,7 @@ def main():
         #         st.metric("",fecha_hora, label_visibility="collapsed")
 
     if st.session_state.pagina_actual == "entrenamientos":
-        if st.session_state.b_practica_conduccion:
+        if st.session_state.practica_conduccion:
             practica_conduccion()
 
     
