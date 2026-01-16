@@ -3,31 +3,32 @@ from recursos_eventos import Event
 from auxfunctions import *
 from datetime import datetime, date, time, timedelta
 
-def practica_conduccion():
+
+def practica_conduccion(editor=False,index=None):
     col0, col1 = st.columns([0.85,0.15], vertical_alignment="center")
     col2, col3 = st.columns([0.85,0.15], vertical_alignment="center")
     col4, col5  = st.columns([0.85,0.15], vertical_alignment="center")
     col6, col7, col8 = st.columns([0.25,0.25,0.5],border=True)
-    date_validation = True
+    date_invalidation = True
     
     st.set_page_config(layout="wide")
     col0.header("PLANIFICACIÓN DE EVENTO",divider="red")
     col2.subheader("Entrenamientos: Práctica de Conducción", divider="red")
-    inst = 0
+    
     with col4:
         repeticion = st.radio("Tipo de Horario y Repetición",
                     ["Evento único", "Repetición semanal", "Repetición mensual", "Rango de días"],
                     index=0, width="stretch", horizontal=True)
     
-    cono = col6.number_input("Cantidad de conos", value=0, min_value=0)
-    inst = col6.number_input("Cantidad de Instructores", value=0, min_value=0,help="Debe haber al menos un instructor por vehiculo" \
-        " interceptor")
+    
     with col7:        
         z4 = st.number_input("Cantidad de vehiculos Z4",value=0, min_value=0)
-        inter = st.number_input("Cantidad de vehiculos Interceptor", value=inst, min_value=inst,)
+        inter = st.number_input("Cantidad de vehiculos Interceptor", value=0, min_value=0,)
         mary = st.number_input("Cantidad de motos Mary-Policia", value=0, min_value=0)
     with col6:
-        
+        cono = st.number_input("Cantidad de conos", value=0, min_value=0)
+        inst = st.number_input("Cantidad de Instructores", value=inter, min_value=inter,help="Debe haber al menos un instructor por vehiculo" \
+        " interceptor")
         option = ["Pista de automovilismo", "Centro de entrenamiento", "Academia Policial"]
         if inter > 0:
             option = [option[0]]
@@ -106,11 +107,14 @@ def practica_conduccion():
         "Vehiculo Z4": z4
     }
     new_event = Event(date_input,time_input,"Práctica de Conducción",dict,place)
-
     
+    collitions_list = collition_search(st.session_state.eventos,new_event)
+
+    if not collitions_list:
+       date_invalidation = False
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")
-    if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_validation):
+    if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
         agregar_evento(new_event)
         cambiar_pagina("inicio")
 

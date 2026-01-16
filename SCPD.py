@@ -32,6 +32,8 @@ def main():
         st.session_state.pagina_actual = "inicio"
     if "eventos" not in st.session_state:
         st.session_state.eventos = []
+    if "dates" not in st.session_state:
+        st.session_state.dates = []
     st.set_page_config(layout="wide")
     
     if st.session_state.pagina_actual == "inicio":
