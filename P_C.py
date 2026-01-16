@@ -6,8 +6,9 @@ from datetime import datetime, date, time, timedelta
 def practica_conduccion():
     col0, col1 = st.columns([0.85,0.15], vertical_alignment="center")
     col2, col3 = st.columns([0.85,0.15], vertical_alignment="center")
-    col4, col5 = st.columns([0.85,0.15], vertical_alignment="center")
+    col4, col5  = st.columns([0.85,0.15], vertical_alignment="center")
     col6, col7, col8 = st.columns([0.25,0.25,0.5],border=True)
+    date_validation = True
     
     st.set_page_config(layout="wide")
     col0.header("PLANIFICACIÓN DE EVENTO",divider="red")
@@ -41,7 +42,7 @@ def practica_conduccion():
         time_input = col8.time_input("Hora de conclusión")
 
     elif repeticion == "Rango de días":
-        date_input = col8.date_input("Fecha", value=["today","today"], min_value="today")
+        date_input = col8.date_input("Rango de fechas", value=["today","today"], min_value="today")
         time_input = col8.time_input("Hora de inicio")
         time_input = col8.time_input("Hora de conclusión")
         
@@ -50,9 +51,9 @@ def practica_conduccion():
         col9, col10 = col8.columns([0.3,0.7])
         prechecks = [0,0,0,0,0,0,0]
         validations = [0,0,0,0,0,0,0]
-        first_date = col10.date_input("Fecha", value="today", min_value="today")
-        time_input = col10.time_input("Hora de inicio")
-        time_input = col10.time_input("Hora de conclusión")
+        first_date = col10.date_input("Fecha inicial", value="today", min_value="today")
+        time_input = col10.time_input("Hora de inicio",value="now")
+        time_input = col10.time_input("Hora de conclusión",value="now")
 
         weekday = first_date.weekday()
         for i in range(7):
@@ -82,7 +83,7 @@ def practica_conduccion():
         st.text(date_input)
 
     elif repeticion == "Repetición mensual":            
-        first_date = col8.date_input("Fecha", value="today", min_value="today")
+        first_date = col8.date_input("Fecha inicial", value="today", min_value="today")
         time_input = col8.time_input("Hora de inicio")
         time_input = col8.time_input("Hora de conclusión")        
         months = col5.slider("Cantidad de meses")
@@ -91,6 +92,9 @@ def practica_conduccion():
         for i in range(months):
             next_date += timedelta(months=1)
             date_input.append(next_date)
+
+
+    
 
     if type(date_input) == list:
         smart_dates_sorter(0,len(date_input)-1,date_input)
@@ -106,7 +110,7 @@ def practica_conduccion():
     
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")
-    if col3.button("Confirmar",use_container_width=True, type="primary"):
+    if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_validation):
         agregar_evento(new_event)
         cambiar_pagina("inicio")
 

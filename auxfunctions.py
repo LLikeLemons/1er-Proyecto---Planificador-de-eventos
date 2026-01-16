@@ -53,24 +53,3 @@ def dates_comparison(date1,date2):
 def collition_search(list):
     pass
 
-def update_resources(AMP = None):
-    resources = {
-    "AMP": 0,
-    "Bicicletas": 0,
-    "Blancos de práctica": 00,
-    "Chalecos Antibalas":100,
-    "Entrenadores de Defensa Personal":5,
-    "Entrenadores Físicos":5,
-    "Equipo Táctico":20,
-    "Escopetas": 50,
-    "Instructores": 30,
-    "Instructores de unidades especiales":6,
-    "Libro de capacitación para agentes I":50,
-    "Libro de capacitación para agentes II":50,
-    "Manuales de conducción para agentes": 50,
-    "Moto Mary-Policía": 20,
-    "Oficiales de alto rango": 7,
-    "Proyectores": 10,
-    "Vehículo Z4": 30,
-    "Vehículo Interceptor": 5,
-}
