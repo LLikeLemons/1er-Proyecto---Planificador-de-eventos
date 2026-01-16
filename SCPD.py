@@ -4,8 +4,15 @@ from datetime import datetime
 from auxfunctions import *
 from P_C import practica_conduccion
 
-
-resources = {
+def main():
+    if "pagina_actual" not in st.session_state:
+        st.session_state.pagina_actual = "inicio"
+    if "eventos" not in st.session_state:
+        st.session_state.events = []
+    if "dates" not in st.session_state:
+        st.session_state.dates = []
+    if "resources" not in st.session_state:
+        st.session_state.resources = {
     "AMP": 50,
     "Bicicletas": 30,
     "Blancos de práctica": 30,
@@ -25,15 +32,6 @@ resources = {
     "Vehículo Z4": 30,
     "Vehículo Interceptor": 5,
 }
-
-
-def main():
-    if "pagina_actual" not in st.session_state:
-        st.session_state.pagina_actual = "inicio"
-    if "eventos" not in st.session_state:
-        st.session_state.eventos = []
-    if "dates" not in st.session_state:
-        st.session_state.dates = []
     st.set_page_config(layout="wide")
     
     if st.session_state.pagina_actual == "inicio":
