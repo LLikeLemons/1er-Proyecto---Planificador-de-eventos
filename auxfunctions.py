@@ -47,42 +47,49 @@ def merge(l:int,m:int,r:int,list:list[date]):
     for i in range(len(result)):
         list[l+i] = result[i]
 
-#======================|   BUSQUEDA DE COLISIONES DE RECURSOS Y HORARIOS EN EVENTOS   |============================================================
+#======================|   BUSQUEDA DE COLISIONES DE RECURSOS Y HORARIOS EN EVENTOS   |=======================================================
 
 
-    
-def binary_search(left: int, right: int, dates_list: list[tuple[date,int]], date: date):
-    if left >= right:
-        return []
+#------------------|   BUSQUEDA DE OCURRENCIAS DE FECHAS EN EVENTOS   |-----------------------------------------------------------
+
+def binary_search(left, right, list, element):
+    indexes = [0,0]
+    main_indexes = []
+    if list[0][0] == element:
+        indexes[0] = 0
+    else:
+        indexes[0] = binary_search_first(left, right, list, element)
+    if list[len(list)-1][0] == element:
+        indexes[1] = len(list)-1
+    else:
+        indexes[1] = binary_search_last(left, right, list, element)
+    for i in range(indexes[0],indexes[1]):
+        main_indexes.append(list[i][1])
+    return main_indexes
+
+def binary_search_first(left,right,list,element):
+    if left > right or (left == right and (right == len(list)-1 or list[right+1][0] != element)):
+        return -1
     middle = (left+right)//2
-    if dates_list[middle] == date:
-        irange = [0,0]
-        irange[0] = aux_binary_search(left, middle, dates_list, date, under=True)
-        irange[1] = aux_binary_search(middle+1, right, dates_list, date, under=False)
-        new_range = []
-        for i in range[irange[0],irange[1]+1]:
-            if dates_list[i][1] not in new_range:
-                new_range.append(i)
-        return new_range
-    elif dates_list[middle] > date:
-        binary_search(left, middle, dates_list, date)
+    if list[middle][0] != element and list[middle+1][0] == element:
+        return middle+1
+    elif list[middle][0] >= element:
+        return binary_search_first(left, middle, list, element)
     else:
-        binary_search(middle+1, right, dates_list, date)
-        
+        return binary_search_first(middle+1,right,list,element)
+    
+def binary_search_last(left,right,list,element):
+    if left > right or (left == right and list[right-1][0] != element):
+        return -1
+    middle = (left+right)//2
+    if list[middle][0] != element and list[middle-1][0] == element:
+        return middle-1
+    elif list[middle][0] <= element:
+        return binary_search_last(middle+1, right, list, element)
+    else:
+        return binary_search_last(left,middle,list,element)
 
-def aux_binary_search(left: int, right: int, dates_list: list[tuple[date,int]], date: date, under: bool):
-    if left >= right:
-        return left
-    middle = (left + right)//2
-    if dates_list[middle] == date:
-        if under:
-            aux_binary_search(left, middle, dates_list, date, under)
-        else:
-            aux_binary_search(middle+1, right, dates_list, date, under)
-    elif dates_list[middle] > date:
-        aux_binary_search(left, middle, dates_list, date, under)
-    else:
-        aux_binary_search(middle+1, right, dates_list, date, under)
+#-------------------------------------------------------------------------------------------------------------------------------
 
 def hours_collition(second_event_time: time, main_event_time: time):
     se = second_event_time, me = main_event_time
