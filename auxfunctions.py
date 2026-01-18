@@ -6,7 +6,7 @@ from datetime import date, datetime, time
 def cambiar_pagina(nombre_pagina: str):
     st.session_state.pagina_actual = nombre_pagina
 def agregar_evento(nuevo_evento: Event):
-    st.session_state.eventos.append(nuevo_evento)
+    st.session_state.events.append(nuevo_evento)
 def agregar_fecha(fechas_evento: list[tuple[date,int]]):
     st.session_state.dates.append((fechas_evento,len(st.session_state.events)))
     smart_dates_sorter(st.session_state.dates)
@@ -30,7 +30,10 @@ def smart_dates_sorter(l:int,r:int,list:list[date]):
     m = (l+r)//2
     smart_dates_sorter(l,m,list)
     smart_dates_sorter(m+1,r,list)
-    merge(l,m,r,list)
+    if type(list[0])==tuple:
+        merge2(l,m,r,list)
+    else:
+        merge(l,m,r,list)
 
 def merge(l:int,m:int,r:int,list:list[date]):
     result = []
@@ -47,12 +50,29 @@ def merge(l:int,m:int,r:int,list:list[date]):
     for i in range(len(result)):
         list[l+i] = result[i]
 
+def merge2(l:int,m:int,r:int,list:list[date]):
+    result = []
+    l1, l2 = l, m+1
+    while l1 <= m and l2 <= r:
+        if list[l1][0] < list[l2][0]:
+            result.append(list[l1])
+            l1+=1
+        else:
+            result.append(list[l2])
+            l2+=1
+    result.extend(list[l1:m+1])
+    result.extend(list[l2:r+1])
+    for i in range(len(result)):
+        list[l+i] = result[i]
+
+
+
 #======================|   BUSQUEDA DE COLISIONES DE RECURSOS Y HORARIOS EN EVENTOS   |=======================================================
 
 
 #------------------|   BUSQUEDA DE OCURRENCIAS DE FECHAS EN EVENTOS   |-----------------------------------------------------------
 
-def binary_search(left, right, list, element):
+def binary_search(left: int, right: int, list: list[tuple[date,int]], element: date):
     indexes = [0,0]
     main_indexes = []
     if list[0][0] == element:
@@ -63,11 +83,13 @@ def binary_search(left, right, list, element):
         indexes[1] = len(list)-1
     else:
         indexes[1] = binary_search_last(left, right, list, element)
+    if indexes[0] == -1:
+        return False
     for i in range(indexes[0],indexes[1]):
         main_indexes.append(list[i][1])
     return main_indexes
 
-def binary_search_first(left,right,list,element):
+def binary_search_first(left: int, right: int, list: list[tuple[date,int]], element: date):
     if left > right or (left == right and (right == len(list)-1 or list[right+1][0] != element)):
         return -1
     middle = (left+right)//2
@@ -78,7 +100,7 @@ def binary_search_first(left,right,list,element):
     else:
         return binary_search_first(middle+1,right,list,element)
     
-def binary_search_last(left,right,list,element):
+def binary_search_last(left: int, right: int, list: list[tuple[date,int]], element: date):
     if left > right or (left == right and list[right-1][0] != element):
         return -1
     middle = (left+right)//2
@@ -101,20 +123,51 @@ def manage_resources(total_resources: dict[int], event_resources:dict[int]):
     for k in event_resources.keys():
         total_resources[k] -= event_resources[k]
 
-
+def resource_collition(total_resources: dict[int], event_resources: dict[int]):
+    collition = False
+    for k in event_resources.keys():
+        total_resources[k] -= event_resources[k]
+        if total_resources[k] < 0:
+            collition = True
+    return collition
 def collition_search(event):
     collitions_result = []
-    
-    for i in range(len(event.date)):
-        total_resources = st.session_state.resources
-        avaliable_place = True
-        values_list = binary_search(st.session_state.dates, event.date[i])        
-        if values_list:   
-            for j in range(len(values_list)):
-                if hours_collition(st.session_state.events[values_list[j]].hours, event.hour):
-                    manage_resources(total_resources,st.session_state.events[values_list[j]].resources)
-                    if st.session_state.events[values_list[j]].place == event.place:
-                        avaliable_place = False
-        collitions_result.append((total_resources,avaliable_place))
+    if st.session_state.dates:
+        for i in range(len(event.date)):
+            total_resources = st.session_state.resources
+            avaliable_place = True
+            values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, event.date[i])        
+            if values_list:   
+                for j in range(len(values_list)):
+                    if hours_collition(st.session_state.events[values_list[j]].time, event.time):
+                        manage_resources(total_resources,st.session_state.events[values_list[j]].resources)
+                        if st.session_state.events[values_list[j]].place == event.place:
+                            avaliable_place = False
+                if resource_collition(total_resources,event.resources):
+                    collitions_result.append((event.date[i],total_resources,avaliable_place))
+                elif not avaliable_place:
+                    collitions_result.append(event.date[i],-1, False)            
+        return collitions_result
+    else:
+        return collitions_result
 
-#==================================================================================================================================================
+def decoding_collitions(collitions, event):
+    decoded = ""
+    for dates in collitions:
+        sentence = f"{dates[0]}:  \n"
+        text = ""
+        for k,v in dates[1].items():
+            if v < 0:
+                text += f"{k}: {v*-1} faltantes  \n"
+        sentence += f"{text}"
+        if dates[2]:
+            sentence += f"{event.place} no disponible \n"
+        decoded += f"{sentence}  \n"
+    return decoded
+
+
+
+#==============|   BUSQUEDA DE PROXIMO INTERVAlO DISPONIBLE   |===================================================================
+
+def next_gap():
+    return "Hola"

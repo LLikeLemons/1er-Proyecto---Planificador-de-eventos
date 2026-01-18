@@ -2,21 +2,24 @@ import streamlit as st
 import time
 from datetime import datetime
 from auxfunctions import *
+from auxfunctions_2 import *
 from P_C import practica_conduccion
 
 def main():
+    storage = load_json("data")
     if "pagina_actual" not in st.session_state:
         st.session_state.pagina_actual = "inicio"
-    if "eventos" not in st.session_state:
-        st.session_state.events = []
     if "dates" not in st.session_state:
-        st.session_state.dates = []
+        st.session_state.dates = storage[0]
+    if "eventos" not in st.session_state:
+        st.session_state.events = from_dict(storage[1])
     if "resources" not in st.session_state:
         st.session_state.resources = {
     "AMP": 50,
     "Bicicletas": 30,
     "Blancos de práctica": 30,
     "Chalecos Antibalas":100,
+    "Conos": 20,
     "Entrenadores de Defensa Personal":5,
     "Entrenadores Físicos":5,
     "Equipo Táctico":20,

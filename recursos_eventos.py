@@ -6,3 +6,13 @@ class Event:
         self.type = type
         self.resources = resources
         self.place = place
+    def to_dict(self):
+        dict = {
+            "date": self.date,
+            "time": self.time,
+            "type": self.type,
+            "resources": self.resources,
+            "place": self.place
+        }
+        return dict
+
