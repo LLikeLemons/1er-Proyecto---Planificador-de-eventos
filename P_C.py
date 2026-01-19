@@ -1,7 +1,7 @@
 import streamlit as st
-from recursos_eventos import Event
+from recursos_eventos import *
 from auxfunctions import *
-from auxfunctions_2 import save_json
+from auxfunctions_2 import *
 from datetime import datetime, date, time, timedelta
 
 
@@ -40,14 +40,14 @@ def practica_conduccion(editor=False,index=None):
     
     if repeticion == "Evento único":
         date_input = col8.date_input("Fecha", value="today", min_value="today")
-        time_input = col8.time_input("Hora de inicio")
-        time_input = col8.time_input("Hora de conclusión")
+        time_1 = col8.time_input("Hora de inicio")
+        time_2 = col8.time_input("Hora de conclusión")
         date_input = [date_input]
 
     elif repeticion == "Rango de días":
         date_input = col8.date_input("Rango de fechas", value=["today","today"], min_value="today")
-        time_input = col8.time_input("Hora de inicio")
-        time_input = col8.time_input("Hora de conclusión")
+        time_1 = col8.time_input("Hora de inicio")
+        time_2 = col8.time_input("Hora de conclusión")
         
 
     elif repeticion == "Repetición semanal":
@@ -55,8 +55,8 @@ def practica_conduccion(editor=False,index=None):
         prechecks = [0,0,0,0,0,0,0]
         validations = [0,0,0,0,0,0,0]
         first_date = col10.date_input("Fecha inicial", value="today", min_value="today")
-        time_input = col10.time_input("Hora de inicio",value="now")
-        time_input = col10.time_input("Hora de conclusión",value="now")
+        time_1 = col10.time_input("Hora de inicio",value="now")
+        time_2 = col10.time_input("Hora de conclusión",value="now")
 
         weekday = first_date.weekday()
         for i in range(7):
@@ -87,8 +87,8 @@ def practica_conduccion(editor=False,index=None):
 
     elif repeticion == "Repetición mensual":            
         first_date = col8.date_input("Fecha inicial", value="today", min_value="today")
-        time_input = col8.time_input("Hora de inicio")
-        time_input = col8.time_input("Hora de conclusión")        
+        time_1 = col8.time_input("Hora de inicio")
+        time_2 = col8.time_input("Hora de conclusión")        
         months = col5.slider("Cantidad de meses")
         date_input = [first_date]
         next_date = first_date
@@ -108,7 +108,7 @@ def practica_conduccion(editor=False,index=None):
         "Vehículo Interceptor": inter,
         "Vehículo Z4": z4
     }
-    new_event = Event(date_input,time_input,"Práctica de Conducción",dict,place)
+    new_event = Event(date_input,(time_1,time_2),"Práctica de Conducción",dict,place)
     
     collitions_list = collition_search(new_event)
     with col11.popover("Colisiones e Intervalos", width="stretch"):
@@ -138,8 +138,15 @@ def practica_conduccion(editor=False,index=None):
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
         agregar_evento(new_event)
         agregar_fecha(date_input)
-        storage = [st.session_state.dates,st.session_state.events]
-        save_json(storage,"data")
+        dict_dates = st.session_state.dates
+        for i in range(len(dict_dates)):
+            dict_dates[i] = date_event_dict(dict_dates[i])
+        dict_events = st.session_state.events
+        for i in range(len(dict_events)):
+            dict_events[i] = dict_events[i].to_dict()
+        
+        storage = [dict_dates,dict_events]
+        save_json(storage,"data.json")
         cambiar_pagina("inicio")
     
     

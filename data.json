@@ -1,0 +1,36 @@
+[
+    [
+        [
+            2026,
+            1,
+            19,
+            1
+        ]
+    ],
+    [
+        {
+            "date": [
+                [
+                    2026,
+                    1,
+                    19
+                ]
+            ],
+            "time": [
+                0,
+                28,
+                1,
+                15
+            ],
+            "type": "Práctica de Conducción",
+            "resources": {
+                "Conos": 0,
+                "Instructores": 3,
+                "Moto Mary-Policía": 0,
+                "Vehículo Interceptor": 3,
+                "Vehículo Z4": 0
+            },
+            "place": "Pista de automovilismo"
+        }
+    ]
+]

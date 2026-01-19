@@ -7,9 +7,11 @@ def cambiar_pagina(nombre_pagina: str):
     st.session_state.pagina_actual = nombre_pagina
 def agregar_evento(nuevo_evento: Event):
     st.session_state.events.append(nuevo_evento)
-def agregar_fecha(fechas_evento: list[tuple[date,int]]):
-    st.session_state.dates.append((fechas_evento,len(st.session_state.events)))
-    smart_dates_sorter(st.session_state.dates)
+def agregar_fecha(fechas_evento: list[date]):
+    for i in range(len(fechas_evento)):
+        temporal = (fechas_evento[i],len(st.session_state.events))
+        st.session_state.dates.append(temporal)
+    smart_dates_sorter(0,len(st.session_state.dates)-1,st.session_state.dates)
 
 #==================================================================================================================================================
 

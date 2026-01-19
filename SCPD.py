@@ -4,15 +4,17 @@ from datetime import datetime
 from auxfunctions import *
 from auxfunctions_2 import *
 from P_C import practica_conduccion
-
+from recursos_eventos import *
 def main():
-    storage = load_json("data")
+    storage = load_json("data.json")
+    for i in range(len(storage[0])):
+        storage[0][i] = dict_date_event(storage[0][i])
     if "pagina_actual" not in st.session_state:
         st.session_state.pagina_actual = "inicio"
     if "dates" not in st.session_state:
         st.session_state.dates = storage[0]
     if "eventos" not in st.session_state:
-        st.session_state.events = from_dict(storage[1])
+        st.session_state.events = dict_event(storage[1])
     if "resources" not in st.session_state:
         st.session_state.resources = {
     "AMP": 50,
@@ -83,6 +85,8 @@ def main():
                     font-weight: bold;
                     text-align: center;'> PRUEBA DE PAGINA
         </div>""", unsafe_allow_html=True)
+        st.text(st.session_state.dates)
+        st.text(st.session_state.events)
         
         
         # placeholder = st.empty()

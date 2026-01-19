@@ -2,7 +2,9 @@ import os
 import sys
 import json
 from recursos_eventos import Event
+from datetime import date, time
 
+#========================================================================================================================
 def obtain_path(archivo):
     if getattr(sys, 'frozen', False):
         base_path = sys._MEIPASS
@@ -10,7 +12,7 @@ def obtain_path(archivo):
         base_path = os.path.dirname(os.path.abspath(__file__))
 
     return os.path.join(base_path, archivo)
-#======================================================================================================================================
+
 def load_json(nombre_archivo):
     path = obtain_path(nombre_archivo)
     try:
@@ -19,7 +21,6 @@ def load_json(nombre_archivo):
     except FileNotFoundError:
         print(f"ERROR>No se encuentra el archivo {nombre_archivo}")
         return [[],[]]
-#=======================================================================================================================================================
     
 def save_json(datos,nombre_archivo):
     if getattr(sys, 'frozen', False):
@@ -30,8 +31,6 @@ def save_json(datos,nombre_archivo):
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(datos,f,indent=4, ensure_ascii=False)
         return path
-    
-def from_dict(list: list[dict[int]]):
-    for i in range(len(list)):
-        list[i] = Event(list[i]["date"],list[i]["time"],list[i]["type"],list[i]["resources"],list[i]["place"])
-    
+
+
+#=============================================================================================================================
