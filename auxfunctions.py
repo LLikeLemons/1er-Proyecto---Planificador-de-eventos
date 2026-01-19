@@ -9,7 +9,7 @@ def agregar_evento(nuevo_evento: Event):
     st.session_state.events.append(nuevo_evento)
 def agregar_fecha(fechas_evento: list[date]):
     for i in range(len(fechas_evento)):
-        temporal = (fechas_evento[i],len(st.session_state.events))
+        temporal = (fechas_evento[i],len(st.session_state.events)-1)
         st.session_state.dates.append(temporal)
     smart_dates_sorter(0,len(st.session_state.dates)-1,st.session_state.dates)
 
@@ -72,11 +72,15 @@ def merge2(l:int,m:int,r:int,list:list[date]):
 #======================|   BUSQUEDA DE COLISIONES DE RECURSOS Y HORARIOS EN EVENTOS   |=======================================================
 
 
-#------------------|   BUSQUEDA DE OCURRENCIAS DE FECHAS EN EVENTOS   |-----------------------------------------------------------
+#------------------|   BUSQUEDA DE COINCIDENCIAS DE FECHAS EN EVENTOS   |-----------------------------------------------------------
 
 def binary_search(left: int, right: int, list: list[tuple[date,int]], element: date):
+    st.write(list)
+    st.write(element)
     indexes = [0,0]
     main_indexes = []
+    if len(list) == 1 and list[0][0] == element:
+        return [0]
     if list[0][0] == element:
         indexes[0] = 0
     else:
@@ -115,8 +119,9 @@ def binary_search_last(left: int, right: int, list: list[tuple[date,int]], eleme
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-def hours_collition(second_event_time: time, main_event_time: time):
-    se = second_event_time, me = main_event_time
+def hours_collition(second_event_time: tuple[time], main_event_time: tuple[time]):
+    se = second_event_time
+    me = main_event_time
     if me[0] >= se[1] or me[1] <= se[0]:
         return False
     return True
@@ -127,28 +132,37 @@ def manage_resources(total_resources: dict[int], event_resources:dict[int]):
 
 def resource_collition(total_resources: dict[int], event_resources: dict[int]):
     collition = False
+    st.write(total_resources)
     for k in event_resources.keys():
+        st.write(total_resources[k])
+        st.write(event_resources[k])
         total_resources[k] -= event_resources[k]
         if total_resources[k] < 0:
             collition = True
+    st.write(total_resources)
+    
     return collition
-def collition_search(event):
+def collition_search(event,resources):
     collitions_result = []
     if st.session_state.dates:
         for i in range(len(event.date)):
-            total_resources = st.session_state.resources
+            total_resources = resources
             avaliable_place = True
-            values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, event.date[i])        
+            values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, event.date[i])
+            st.write(values_list)        
             if values_list:   
                 for j in range(len(values_list)):
+                    st.write(st.session_state.events[values_list[j]].time)
+                    st.write(hours_collition(st.session_state.events[values_list[j]].time, event.time))
                     if hours_collition(st.session_state.events[values_list[j]].time, event.time):
                         manage_resources(total_resources,st.session_state.events[values_list[j]].resources)
                         if st.session_state.events[values_list[j]].place == event.place:
                             avaliable_place = False
                 if resource_collition(total_resources,event.resources):
+                    
                     collitions_result.append((event.date[i],total_resources,avaliable_place))
                 elif not avaliable_place:
-                    collitions_result.append(event.date[i],-1, False)            
+                    collitions_result.append((event.date[i],-1, False))            
         return collitions_result
     else:
         return collitions_result
@@ -156,15 +170,16 @@ def collition_search(event):
 def decoding_collitions(collitions, event):
     decoded = ""
     for dates in collitions:
-        sentence = f"{dates[0]}:  \n"
+        sentence = f"{dates[0]}: <br>"
         text = ""
-        for k,v in dates[1].items():
-            if v < 0:
-                text += f"{k}: {v*-1} faltantes  \n"
+        if dates[1] != -1:
+            for k,v in dates[1].items():
+                if v < 0:
+                    text += f"{k}: {v*-1} faltantes  <br>"
         sentence += f"{text}"
-        if dates[2]:
-            sentence += f"{event.place} no disponible \n"
-        decoded += f"{sentence}  \n"
+        if not dates[2]:
+            sentence += f"{event.place} no disponible <br>"
+        decoded += f"{sentence}  <br>"
     return decoded
 
 

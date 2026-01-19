@@ -34,3 +34,25 @@ def save_json(datos,nombre_archivo):
 
 
 #=============================================================================================================================
+def st_resources():
+        return {
+    "AMP": 50,
+    "Bicicletas": 30,
+    "Blancos de práctica": 30,
+    "Chalecos Antibalas":100,
+    "Conos": 20,
+    "Entrenadores de Defensa Personal":5,
+    "Entrenadores Físicos":5,
+    "Equipo Táctico":20,
+    "Escopetas": 50,
+    "Instructores": 30,
+    "Instructores de unidades especiales":6,
+    "Libro de capacitación para agentes I":50,
+    "Libro de capacitación para agentes II":50,
+    "Manuales de conducción para agentes": 50,
+    "Moto Mary-Policía": 20,
+    "Oficiales de alto rango": 7,
+    "Proyectores": 10,
+    "Vehículo Z4": 30,
+    "Vehículo Interceptor": 5,
+    }

@@ -110,18 +110,22 @@ def practica_conduccion(editor=False,index=None):
     }
     new_event = Event(date_input,(time_1,time_2),"Práctica de Conducción",dict,place)
     
-    collitions_list = collition_search(new_event)
+    resources = st_resources()
+    collitions_list = collition_search(new_event,resources)
+    st.write(st_resources())
+    if not collitions_list:
+       date_invalidation = False
+
     with col11.popover("Colisiones e Intervalos", width="stretch"):
         
         st.warning("Colisiones")
-        cont = st.container(border=True)
-        with cont:
-            st.markdown(f"""<div style='
-                        border: 2px solid red;
-                        color: darkred;
-                        border-radius: 8px;
-                        '>{decoding_collitions(collitions_list,new_event)}
-                        </div>""",unsafe_allow_html=True)
+        st.markdown(f"""<div style='
+                border: 2px solid red;
+                color: darkred;
+                border-radius: 8px;
+                text-align: center;
+                '>{decoding_collitions(collitions_list,new_event)}
+                </div>""",unsafe_allow_html=True)
         st.success("Próximo intervalo disponible:")
         st.markdown(f"""<div style='
                     border: 1.5px solid darkgreen;
@@ -131,8 +135,7 @@ def practica_conduccion(editor=False,index=None):
                     '>{next_gap()}
                     </div>""",unsafe_allow_html=True)
 
-    if not collitions_list:
-       date_invalidation = False
+    
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):

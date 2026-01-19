@@ -15,28 +15,7 @@ def main():
         st.session_state.dates = storage[0]
     if "eventos" not in st.session_state:
         st.session_state.events = dict_event(storage[1])
-    if "resources" not in st.session_state:
-        st.session_state.resources = {
-    "AMP": 50,
-    "Bicicletas": 30,
-    "Blancos de práctica": 30,
-    "Chalecos Antibalas":100,
-    "Conos": 20,
-    "Entrenadores de Defensa Personal":5,
-    "Entrenadores Físicos":5,
-    "Equipo Táctico":20,
-    "Escopetas": 50,
-    "Instructores": 30,
-    "Instructores de unidades especiales":6,
-    "Libro de capacitación para agentes I":50,
-    "Libro de capacitación para agentes II":50,
-    "Manuales de conducción para agentes": 50,
-    "Moto Mary-Policía": 20,
-    "Oficiales de alto rango": 7,
-    "Proyectores": 10,
-    "Vehículo Z4": 30,
-    "Vehículo Interceptor": 5,
-}
+    
     st.set_page_config(layout="wide")
     
     if st.session_state.pagina_actual == "inicio":
