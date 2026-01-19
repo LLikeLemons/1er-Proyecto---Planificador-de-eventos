@@ -115,4 +115,4 @@ def binary_search_last(left: int, right: int, list: list[tuple[date,int]], eleme
 # ]
 
 # print(collition_search(new_event),ssdates,resources,ssevents)
-print(list(range(0)))
+print(list(range(0,0+1)))

@@ -75,12 +75,10 @@ def merge2(l:int,m:int,r:int,list:list[date]):
 #------------------|   BUSQUEDA DE COINCIDENCIAS DE FECHAS EN EVENTOS   |-----------------------------------------------------------
 
 def binary_search(left: int, right: int, list: list[tuple[date,int]], element: date):
-    st.write(list)
-    st.write(element)
+    st.write(list)                                                                                             #########
+    st.write(element)                                                                                        ###########
     indexes = [0,0]
     main_indexes = []
-    if len(list) == 1 and list[0][0] == element:
-        return [0]
     if list[0][0] == element:
         indexes[0] = 0
     else:
@@ -91,7 +89,9 @@ def binary_search(left: int, right: int, list: list[tuple[date,int]], element: d
         indexes[1] = binary_search_last(left, right, list, element)
     if indexes[0] == -1:
         return False
-    for i in range(indexes[0],indexes[1]):
+    st.write(f"PRimer indice {indexes[0]}")                                                                        ########
+    st.write(f"Ultimo indice {indexes[1]}")                                                                          ########
+    for i in range(indexes[0],indexes[1]+1):
         main_indexes.append(list[i][1])
     return main_indexes
 
@@ -132,14 +132,12 @@ def manage_resources(total_resources: dict[int], event_resources:dict[int]):
 
 def resource_collition(total_resources: dict[int], event_resources: dict[int]):
     collition = False
-    st.write(total_resources)
+    st.write(total_resources)                                                                                     ##########
     for k in event_resources.keys():
-        st.write(total_resources[k])
-        st.write(event_resources[k])
         total_resources[k] -= event_resources[k]
         if total_resources[k] < 0:
             collition = True
-    st.write(total_resources)
+    st.write(total_resources)                                                                                      ##########
     
     return collition
 def collition_search(event,resources):
@@ -149,11 +147,11 @@ def collition_search(event,resources):
             total_resources = resources
             avaliable_place = True
             values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, event.date[i])
-            st.write(values_list)        
+            st.write(values_list)                                                                                  #########
             if values_list:   
                 for j in range(len(values_list)):
-                    st.write(st.session_state.events[values_list[j]].time)
-                    st.write(hours_collition(st.session_state.events[values_list[j]].time, event.time))
+                    st.write(st.session_state.events[values_list[j]].time)                                         #########
+                    st.write(hours_collition(st.session_state.events[values_list[j]].time, event.time))            #######
                     if hours_collition(st.session_state.events[values_list[j]].time, event.time):
                         manage_resources(total_resources,st.session_state.events[values_list[j]].resources)
                         if st.session_state.events[values_list[j]].place == event.place:

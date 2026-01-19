@@ -19,42 +19,31 @@ def main():
     st.set_page_config(layout="wide")
     
     if st.session_state.pagina_actual == "inicio":
-        st.session_state.practica_conduccion = False
 
         with st.sidebar:
             st.header("MENU", divider="red")
             st.subheader("Cursos de Capacitación", divider="red")
-            if st.button("Manejo de Helicóptero", use_container_width=True):
-                cambiar_pagina("cursos_capacitación")
-            if st.button("Capacitación de Instructores", use_container_width=True):
-                cambiar_pagina("cursos_capacitación")
-            if st.button("Capacitación SWAT", use_container_width=True):
-                cambiar_pagina("cursos_capacitación")
+            st.button("Manejo de Helicóptero", use_container_width=True, on_click=cambiar_pagina("manejo heli"))                
+            st.button("Capacitación de Instructores", use_container_width=True, on_click=cambiar_pagina("instructores"))               
+            st.button("Capacitación SWAT", use_container_width=True, on_click=cambiar_pagina("swat"))                
 
             st.subheader("Entrenamientos", divider="red")
-            if st.button("Prácticas de tiro", use_container_width=True):
-                cambiar_pagina("entrenamientos")
-            if st.button("Práctica de Conducción", use_container_width=True):
-                cambiar_pagina("entrenamientos")
-                st.session_state.practica_conduccion = True
-            if st.button("Entrenamiento Fisico", use_container_width=True):
-                cambiar_pagina("entrenamientos")
-
+            st.button("Prácticas de tiro", use_container_width=True,on_click=cambiar_pagina("practica de tiro"))                
+            st.button("Práctica de Conducción", use_container_width=True,on_click=cambiar_pagina("practica conduccion"))
+            st.button("Entrenamiento Fisico", use_container_width=True,on_click=cambiar_pagina("entrenamiento fisico"))
+                
             st.subheader("Simulacros", divider="red")
-            if st.button("Persecución y aprehensión vehicular", use_container_width=True):
-                cambiar_pagina("Simulacros")
-            if st.button("Intervención a Domicilio", use_container_width=True):
-                cambiar_pagina("Simulacros")
-            if st.button("Simulacros con Rehenes", use_container_width=True):
-                cambiar_pagina("Simulacros")
-
+            st.button("Persecución y aprehensión vehicular", use_container_width=True,on_click=cambiar_pagina("persecusion"))                
+            st.button("Intervención a Domicilio", use_container_width=True,on_click=cambiar_pagina("intervencion"))                
+            st.button("Simulacros con Rehenes", use_container_width=True,on_click=cambiar_pagina("rehenes"))
+                        
             st.markdown("""<div 
                         style='
                         color: #000000;
                         border-bottom: 4px solid blue;'>
             </div>""",unsafe_allow_html=True)
-            if st.button("Recursos", use_container_width=True):
-                cambiar_pagina("recursos")
+            st.button("Recursos", use_container_width=True, on_click=cambiar_pagina("recursos"))
+                
 
 
         st.markdown("""<div
@@ -66,18 +55,22 @@ def main():
         </div>""", unsafe_allow_html=True)
         st.text(st.session_state.dates)
         st.text(st.session_state.events)
-        
-        
-        # placeholder = st.empty()
-        # while st.session_state.pagina_actual == "inicio":
-        #     now = datetime.now()
-        #     fecha_hora = now.strftime("%d/%m/%Y %H:%M:%S")
-        #     with placeholder.container():
-        #         st.metric("",fecha_hora, label_visibility="collapsed")
-
-    if st.session_state.pagina_actual == "entrenamientos":
-        if st.session_state.practica_conduccion:
-            practica_conduccion()
+    
+    # pages = {
+    #     "manejo heli":0,
+    #     "swat":0,
+    #     "instructores":0,
+    #     "practica tiro":0,
+    #     "practica_conduccion":practica_conduccion(),
+    #     "entrenamiento fisico":0,
+    #     "persecucion":0,
+    #     "intervencion":0,
+    #     "rehenes":0
+    # }
+    # pages[st.session_state.pagina_actual]
+    
+    # if st.session_state.pagina_actual == "practica conduccion":
+    #     practica_conduccion()
 
     
 if __name__ == "__main__":

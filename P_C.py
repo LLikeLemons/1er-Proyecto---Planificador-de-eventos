@@ -36,18 +36,20 @@ def practica_conduccion(editor=False,index=None):
         place = st.selectbox("Lugar de práctica", option,
                      help="Por cuestiones de seguridad los vehículos Interceptor solo tienen permitido manejarse \n" \
                      "en la pista de automovilismo")
-    
+    time1_help = "Las hora de inicio y conclusion no pueden ser menores que la hora actual"
+    time2_help = "La hora de conclusion no puede ser menor o igual que la hora de inicio"
     
     if repeticion == "Evento único":
         date_input = col8.date_input("Fecha", value="today", min_value="today")
-        time_1 = col8.time_input("Hora de inicio")
-        time_2 = col8.time_input("Hora de conclusión")
+        time_1 = col8.time_input("Hora de inicio", help=time1_help)
+        time_2 = col8.time_input("Hora de conclusión", help=time2_help)
         date_input = [date_input]
 
     elif repeticion == "Rango de días":
         date_input = col8.date_input("Rango de fechas", value=["today","today"], min_value="today")
-        time_1 = col8.time_input("Hora de inicio")
-        time_2 = col8.time_input("Hora de conclusión")
+        time_1 = col8.time_input("Hora de inicio", help=time1_help)
+        time_2 = col8.time_input("Hora de conclusión", help=time2_help)
+        st.text(date_input)
         
 
     elif repeticion == "Repetición semanal":
@@ -55,8 +57,8 @@ def practica_conduccion(editor=False,index=None):
         prechecks = [0,0,0,0,0,0,0]
         validations = [0,0,0,0,0,0,0]
         first_date = col10.date_input("Fecha inicial", value="today", min_value="today")
-        time_1 = col10.time_input("Hora de inicio",value="now")
-        time_2 = col10.time_input("Hora de conclusión",value="now")
+        time_1 = col10.time_input("Hora de inicio",value="now", help=time1_help)
+        time_2 = col10.time_input("Hora de conclusión",value="now", help=time2_help)
 
         weekday = first_date.weekday()
         for i in range(7):
@@ -87,8 +89,8 @@ def practica_conduccion(editor=False,index=None):
 
     elif repeticion == "Repetición mensual":            
         first_date = col8.date_input("Fecha inicial", value="today", min_value="today")
-        time_1 = col8.time_input("Hora de inicio")
-        time_2 = col8.time_input("Hora de conclusión")        
+        time_1 = col8.time_input("Hora de inicio",help=time1_help)
+        time_2 = col8.time_input("Hora de conclusión",help=time2_help)        
         months = col5.slider("Cantidad de meses")
         date_input = [first_date]
         next_date = first_date
@@ -112,20 +114,24 @@ def practica_conduccion(editor=False,index=None):
     
     resources = st_resources()
     collitions_list = collition_search(new_event,resources)
-    st.write(st_resources())
+    st.write(st_resources())                                                                                    #########
     if not collitions_list:
        date_invalidation = False
+    actual_time = datetime.now()
+    actual_time = time(actual_time.hour,actual_time.minute)   
+    if time_2 <= time_1 or time_1 == actual_time or time_2 == actual_time:
+        date_invalidation = True
 
     with col11.popover("Colisiones e Intervalos", width="stretch"):
-        
-        st.warning("Colisiones")
-        st.markdown(f"""<div style='
-                border: 2px solid red;
-                color: darkred;
-                border-radius: 8px;
-                text-align: center;
-                '>{decoding_collitions(collitions_list,new_event)}
-                </div>""",unsafe_allow_html=True)
+        if collitions_list:
+            st.warning("Colisiones")
+            st.markdown(f"""<div style='
+                    border: 2px solid red;
+                    color: darkred;
+                    border-radius: 8px;
+                    text-align: center;
+                    '>{decoding_collitions(collitions_list,new_event)}
+                    </div>""",unsafe_allow_html=True)
         st.success("Próximo intervalo disponible:")
         st.markdown(f"""<div style='
                     border: 1.5px solid darkgreen;
