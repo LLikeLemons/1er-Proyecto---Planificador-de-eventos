@@ -3,7 +3,16 @@ import time
 from datetime import datetime
 from auxfunctions import *
 from auxfunctions_2 import *
+from C_I import capacitacion_intructor
+from C_S import capacitacion_swat
+from E_F import entrenamiento_fisico
+from I_D import intervencion_domicilio
 from P_C import practica_conduccion
+from P_V import persecusion_vehiculo
+from P_T import practica_tiro
+from S_R import simulacro_rehenes
+from M_H import manejo_helicoptero
+from recursos import recursos
 from recursos_eventos import *
 def main():
     storage = load_json("data.json")
@@ -43,9 +52,7 @@ def main():
                         border-bottom: 4px solid blue;'>
             </div>""",unsafe_allow_html=True)
             st.button("Recursos", use_container_width=True, on_click=cambiar_pagina("recursos"))
-                
-
-
+            
         st.markdown("""<div
                     style='
                     color: red;
@@ -55,6 +62,27 @@ def main():
         </div>""", unsafe_allow_html=True)
         st.text(st.session_state.dates)
         st.text(st.session_state.events)
+    elif st.session_state.pagina_actual == "manejo heli":
+        manejo_helicoptero()
+    elif st.session_state.pagina_actual == "instructores":
+        capacitacion_intructor()
+    elif st.session_state.pagina_actual == "swat":
+        capacitacion_swat()
+    elif st.session_state.pagina_actual == "practica de tiro":
+        practica_tiro()
+    elif st.session_state.pagina_actual == "practica conduccion":
+        practica_conduccion()
+    elif st.session_state.pagina_actual == "entrenamiento fisico":
+        entrenamiento_fisico()
+    elif st.session_state.pagina_actual == "persecusion":
+        persecusion_vehiculo()
+    elif st.session_state.pagina_actual == "intervencion":
+        intervencion_domicilio()
+    elif st.session_state.pagina_actual == "rehenes":
+        simulacro_rehenes()
+    elif st.session_state.pagina_actual == "recursos":
+        recursos()
+    
     
     # pages = {
     #     "manejo heli":0,
