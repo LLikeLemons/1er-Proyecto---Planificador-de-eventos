@@ -1,19 +1,9 @@
 import streamlit as st
 import time
-from datetime import datetime
-from auxfunctions import *
-from auxfunctions_2 import *
-from C_I import capacitacion_intructor
-from C_S import capacitacion_swat
-from E_F import entrenamiento_fisico
-from I_D import intervencion_domicilio
-from P_C import practica_conduccion
-from P_V import persecusion_vehiculo
-from P_T import practica_tiro
-from S_R import simulacro_rehenes
-from M_H import manejo_helicoptero
-from recursos import recursos
-from recursos_eventos import *
+from paginas_eventos import *
+from methods import *
+from datetime import datetime         
+from paginas_admin.recursos import recursos
 def main():
     storage = load_json("data.json")
     for i in range(len(storage[0])):

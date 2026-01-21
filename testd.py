@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import date, datetime, time
-from recursos_eventos import Event
+from methods import Event
 
 def binary_search(left: int, right: int, list: list[tuple[date,int]], element: date):
     indexes = [0,0]
