@@ -1,0 +1,13 @@
+crear funcion rango de dias
+
+crear funcion de busqueda de intervalo
+
+eliminar repeticiones de domingo e invalidar fechas de domingo
+
+finalizar las demas paginas
+
+correccion de indices del almacen de fechas tras eliminar evento
+
+crear pagina para buscar colisiones de recursos
+
+ajustar las opciones de edicion

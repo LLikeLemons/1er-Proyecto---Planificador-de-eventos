@@ -1,7 +1,5 @@
 import streamlit as st
-from recursos_eventos import *
-from auxfunctions import *
-from auxfunctions_2 import *
+from methods import *
 from datetime import datetime, date, time, timedelta
 
 def simulacro_rehenes(editor=False,index=None):

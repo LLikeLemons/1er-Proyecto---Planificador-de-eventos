@@ -1,7 +1,5 @@
 import streamlit as st
-from recursos_eventos import *
-from auxfunctions import *
-from auxfunctions_2 import *
+from methods import *
 from datetime import datetime, date, time, timedelta
 
 
@@ -18,7 +16,7 @@ def practica_conduccion(editor=False,index=None):
     
     with col4:
         repeticion = st.radio("Tipo de Horario y Repetición",
-                    ["Evento único", "Repetición semanal", "Repetición mensual", "Rango de días"],
+                    ["Evento único", "Frecuencia semanal", "Frecuencia mensual", "Rango de días"],
                     index=0, width="stretch", horizontal=True)
     
     
@@ -49,7 +47,7 @@ def practica_conduccion(editor=False,index=None):
         date_input = col8.date_input("Rango de fechas", value=["today","today"], min_value="today")
         time_1 = col8.time_input("Hora de inicio", help=time1_help)
         time_2 = col8.time_input("Hora de conclusión", help=time2_help)
-        st.text(date_input)
+        st.write(date_input)
         
 
     elif repeticion == "Repetición semanal":
@@ -72,7 +70,7 @@ def practica_conduccion(editor=False,index=None):
             We = st.checkbox("Miércoles", prechecks[2], disabled=validations[2])
             Th = st.checkbox("Jueves", prechecks[3], disabled=validations[3])
             Fr = st.checkbox("Viernes", prechecks[4], disabled=validations[4])
-            Sa = st.checkbox("Sabado", prechecks[5], disabled=validations[5])
+            Sa = st.checkbox("Sábado", prechecks[5], disabled=validations[5])
         weeks = col5.slider("Cantidad de semanas", max_value=8)
         attempts = [Mo,Tu,We,Th,Fr,Sa]
         date_input = []
@@ -156,18 +154,4 @@ def practica_conduccion(editor=False,index=None):
         
         storage = [dict_dates,dict_events]
         save_json(storage,"data.json")
-        cambiar_pagina("inicio")
-    
-    
-        
-    
-   
-        
-
-    
-    
-    
-
-    
-    # opciones_salida(new_event)
-    
+        cambiar_pagina("inicio")    

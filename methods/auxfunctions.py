@@ -1,5 +1,5 @@
 import streamlit as st
-from recursos_eventos import Event
+from .recursos_eventos import Event
 from datetime import date, datetime, time
 #==========================|   CAMBIO DE VARIABLES GLOBALES PRINCIPALES   |========================================================================
 
@@ -183,6 +183,27 @@ def decoding_collitions(collitions, event):
 
 
 #==============|   BUSQUEDA DE PROXIMO INTERVAlO DISPONIBLE   |===================================================================
+def weekdays_search(event):
+    weekdays = []
+    for x in event.dates:
+        if x.weekday() not in validation:
+            validation.append(x.weekday)
+    validation = [0,0,0,0,0,0,0]
+    for x in weekdays:
+        validation[x] = 1
+    return validation
+def frecuency_type(event):
+    rest = event.dates[-1] - event.dates[0]
+    if len(event.dates) == 1:
+        return 0 
+    elif rest.days%7==0:
+        return 1
+    elif rest.days%28==0 or rest.days%29==0 or rest.days%30==0 or rest.days%31==0:
+        return 2
+    else:
+        pass
 
+    
+    
 def next_gap():
     return "Hola"

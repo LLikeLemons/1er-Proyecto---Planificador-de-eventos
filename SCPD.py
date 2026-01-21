@@ -3,7 +3,7 @@ import time
 from paginas_eventos import *
 from methods import *
 from datetime import datetime         
-from paginas_admin.recursos import recursos
+from paginas_admin.edicion import edicion
 def main():
     storage = load_json("data.json")
     for i in range(len(storage[0])):
@@ -22,26 +22,26 @@ def main():
         with st.sidebar:
             st.header("MENU", divider="red")
             st.subheader("Cursos de Capacitación", divider="red")
-            st.button("Manejo de Helicóptero", use_container_width=True, on_click=cambiar_pagina("manejo heli"))                
-            st.button("Capacitación de Instructores", use_container_width=True, on_click=cambiar_pagina("instructores"))               
-            st.button("Capacitación SWAT", use_container_width=True, on_click=cambiar_pagina("swat"))                
+            st.button("Manejo de Helicóptero", use_container_width=True, on_click=cambiar_pagina("Manejo de Helicoptero"))                
+            st.button("Capacitación de Instructores", use_container_width=True, on_click=cambiar_pagina("Capacitacion de Instructores"))               
+            st.button("Capacitación SWAT", use_container_width=True, on_click=cambiar_pagina("Capacitacion SWAT"))                
 
             st.subheader("Entrenamientos", divider="red")
-            st.button("Prácticas de tiro", use_container_width=True,on_click=cambiar_pagina("practica de tiro"))                
-            st.button("Práctica de Conducción", use_container_width=True,on_click=cambiar_pagina("practica conduccion"))
-            st.button("Entrenamiento Fisico", use_container_width=True,on_click=cambiar_pagina("entrenamiento fisico"))
+            st.button("Prácticas de Tiro", use_container_width=True,on_click=cambiar_pagina("Practica de Tiro"))                
+            st.button("Práctica de Conducción", use_container_width=True,on_click=cambiar_pagina("Practica de Conduccion"))
+            st.button("Entrenamiento Fisico", use_container_width=True,on_click=cambiar_pagina("Entrenamiento Fisico"))
                 
             st.subheader("Simulacros", divider="red")
-            st.button("Persecución y aprehensión vehicular", use_container_width=True,on_click=cambiar_pagina("persecusion"))                
-            st.button("Intervención a Domicilio", use_container_width=True,on_click=cambiar_pagina("intervencion"))                
-            st.button("Simulacros con Rehenes", use_container_width=True,on_click=cambiar_pagina("rehenes"))
+            st.button("Persecución y aprehensión vehicular", use_container_width=True,on_click=cambiar_pagina("Persecución y aprehensión vehicular"))                
+            st.button("Intervención a Domicilio", use_container_width=True,on_click=cambiar_pagina("Intervención a Domicilio"))                
+            st.button("Simulacros con Rehenes", use_container_width=True,on_click=cambiar_pagina("Simulacros con Rehenes"))
                         
             st.markdown("""<div 
                         style='
                         color: #000000;
                         border-bottom: 4px solid blue;'>
             </div>""",unsafe_allow_html=True)
-            st.button("Recursos", use_container_width=True, on_click=cambiar_pagina("recursos"))
+            st.button("Edicion", use_container_width=True, on_click=cambiar_pagina("edicion"))
             
         st.markdown("""<div
                     style='
@@ -52,26 +52,26 @@ def main():
         </div>""", unsafe_allow_html=True)
         st.text(st.session_state.dates)
         st.text(st.session_state.events)
-    elif st.session_state.pagina_actual == "manejo heli":
+    elif st.session_state.pagina_actual == "Manejo de Helicoptero":
         manejo_helicoptero()
-    elif st.session_state.pagina_actual == "instructores":
+    elif st.session_state.pagina_actual == "Capacitacion de Instructores":
         capacitacion_intructor()
-    elif st.session_state.pagina_actual == "swat":
+    elif st.session_state.pagina_actual == "Capacitacion SWAT":
         capacitacion_swat()
-    elif st.session_state.pagina_actual == "practica de tiro":
+    elif st.session_state.pagina_actual == "Practica de Tiro":
         practica_tiro()
-    elif st.session_state.pagina_actual == "practica conduccion":
+    elif st.session_state.pagina_actual == "Practica de Conduccion":
         practica_conduccion()
-    elif st.session_state.pagina_actual == "entrenamiento fisico":
+    elif st.session_state.pagina_actual == "Entrenamiento Fisico":
         entrenamiento_fisico()
-    elif st.session_state.pagina_actual == "persecusion":
+    elif st.session_state.pagina_actual == "Persecución y aprehensión vehicular":
         persecusion_vehiculo()
-    elif st.session_state.pagina_actual == "intervencion":
+    elif st.session_state.pagina_actual == "Intervención a Domicilio":
         intervencion_domicilio()
-    elif st.session_state.pagina_actual == "rehenes":
+    elif st.session_state.pagina_actual == "Simulacros con Rehenes":
         simulacro_rehenes()
-    elif st.session_state.pagina_actual == "recursos":
-        recursos()
+    elif st.session_state.pagina_actual == "edicion":
+        edicion()
     
     
     # pages = {

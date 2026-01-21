@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-from recursos_eventos import Event
+from .recursos_eventos import Event
 from datetime import date, time
 
 #========================================================================================================================
@@ -56,3 +56,4 @@ def st_resources():
     "Vehículo Z4": 30,
     "Vehículo Interceptor": 5,
     }
+

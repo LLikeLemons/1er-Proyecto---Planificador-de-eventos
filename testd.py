@@ -1,45 +1,10 @@
 import streamlit as st
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 from methods import Event
 
-def binary_search(left: int, right: int, list: list[tuple[date,int]], element: date):
-    indexes = [0,0]
-    main_indexes = []
-    if list[0][0] == element:
-        indexes[0] = 0
-    else:
-        indexes[0] = binary_search_first(left, right, list, element)
-    if list[len(list)-1][0] == element:
-        indexes[1] = len(list)-1
-    else:
-        indexes[1] = binary_search_last(left, right, list, element)
-    if indexes[0] == -1:
-        return False
-    for i in range(indexes[0],indexes[1]):
-        main_indexes.append(list[i][1])
-    return main_indexes
-
-def binary_search_first(left: int, right: int, list: list[tuple[date,int]], element: date):
-    if left > right or (left == right and (right == len(list)-1 or list[right+1][0] != element)):
-        return -1
-    middle = (left+right)//2
-    if list[middle][0] != element and list[middle+1][0] == element:
-        return middle+1
-    elif list[middle][0] >= element:
-        return binary_search_first(left, middle, list, element)
-    else:
-        return binary_search_first(middle+1,right,list,element)
-    
-def binary_search_last(left: int, right: int, list: list[tuple[date,int]], element: date):
-    if left > right or (left == right and list[right-1][0] != element):
-        return -1
-    middle = (left+right)//2
-    if list[middle][0] != element and list[middle-1][0] == element:
-        return middle-1
-    elif list[middle][0] <= element:
-        return binary_search_last(middle+1, right, list, element)
-    else:
-        return binary_search_last(left,middle,list,element)
+elementos = date(2027,2,8)-date(2026,1,1)
+if int(elementos)%7==0:
+    print("sin errores concebidos")
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
@@ -115,4 +80,3 @@ def binary_search_last(left: int, right: int, list: list[tuple[date,int]], eleme
 # ]
 
 # print(collition_search(new_event),ssdates,resources,ssevents)
-print(list(range(0,0+1)))
