@@ -1,0 +1,80 @@
+[
+    [
+        [
+            2026,
+            1,
+            21,
+            0
+        ],
+        [
+            2026,
+            1,
+            23,
+            0
+        ],
+        [
+            2026,
+            1,
+            28,
+            0
+        ],
+        [
+            2026,
+            1,
+            30,
+            0
+        ]
+    ],
+    [
+        {
+            "date": [
+                [
+                    2026,
+                    1,
+                    21
+                ],
+                [
+                    2026,
+                    1,
+                    23
+                ],
+                [
+                    2026,
+                    1,
+                    28
+                ],
+                [
+                    2026,
+                    1,
+                    30
+                ]
+            ],
+            "time": [
+                2,
+                32,
+                5,
+                15
+            ],
+            "type": "Práctica de Conducción",
+            "resources": {
+                "Conos": 0,
+                "Instructores": 3,
+                "Moto Mary-Policía": 0,
+                "Vehículo Interceptor": 3,
+                "Vehículo Z4": 0
+            },
+            "place": "Pista de automovilismo",
+            "frecuency type": "Frecuencia semanal",
+            "frecuency": 1,
+            "week days": [
+                0,
+                0,
+                true,
+                0,
+                true,
+                0,
+		0
+            ]
+        }
+    ]
+]

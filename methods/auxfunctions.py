@@ -1,6 +1,6 @@
 import streamlit as st
-from .recursos_eventos import Event
-from datetime import date, datetime, time
+from methods.recursos_eventos import Event
+from datetime import date, datetime, time, timedelta
 #==========================|   CAMBIO DE VARIABLES GLOBALES PRINCIPALES   |========================================================================
 
 def cambiar_pagina(nombre_pagina: str):
@@ -203,7 +203,16 @@ def frecuency_type(event):
     else:
         pass
 
+
     
     
 def next_gap():
     return "Hola"
+def range_addition(range_input):
+    tuple_1 = range_input[0]
+    date_input = []
+    while tuple_1 < range_input[1]:
+        if tuple_1.weekday() != 6:
+            date_input.append(tuple_1)
+        tuple_1 += timedelta(days=1)
+    return date_input

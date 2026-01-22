@@ -6,7 +6,7 @@ class Event:
     def __init__(self, date:list[date], time: tuple,
                  type: str, resources: dict[int], 
                  place: str, frecuency_type: str,
-                 frecuency: int):
+                 frecuency: int, week_days: list[bool]):
         self.date = date
         self.time = time
         self.type = type
@@ -14,6 +14,7 @@ class Event:
         self.place = place
         self.frecuency_type = frecuency_type
         self.frecuency = frecuency
+        self.week_days = week_days
     def to_dict(self):
         dict = {
             "date": date_dict(self.date),
@@ -22,7 +23,8 @@ class Event:
             "resources": self.resources,            
             "place": self.place,
             "frecuency type": self.frecuency_type,
-            "frecuency": self.frecuency
+            "frecuency": self.frecuency,
+            "week days": self.week_days
         }
         return dict
     
@@ -32,7 +34,7 @@ def dict_event(list: list[dict[int]]):
     for i in range(len(list)):
         list[i] = Event(dict_date(list[i]["date"]),dict_time(list[i]["time"]),
                         list[i]["type"],list[i]["resources"],list[i]["place"],
-                        list[i]["frecuency type"],list[i]["frecuency"])
+                        list[i]["frecuency type"],list[i]["frecuency"],list[i]["week days"])
     return list
 
 def dict_time(quatruple):

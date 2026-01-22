@@ -2,8 +2,9 @@ import streamlit as st
 import time
 from paginas_eventos import *
 from methods import *
-from datetime import datetime         
+from datetime import datetime 
 from paginas_admin.edicion import edicion
+
 def main():
     storage = load_json("data.json")
     for i in range(len(storage[0])):
@@ -22,26 +23,26 @@ def main():
         with st.sidebar:
             st.header("MENU", divider="red")
             st.subheader("Cursos de Capacitación", divider="red")
-            st.button("Manejo de Helicóptero", use_container_width=True, on_click=cambiar_pagina("Manejo de Helicoptero"))                
-            st.button("Capacitación de Instructores", use_container_width=True, on_click=cambiar_pagina("Capacitacion de Instructores"))               
-            st.button("Capacitación SWAT", use_container_width=True, on_click=cambiar_pagina("Capacitacion SWAT"))                
+            st.button("Manejo de Helicóptero", use_container_width=True, on_click=lambda: cambiar_pagina("Manejo de Helicoptero"))                
+            st.button("Capacitación de Instructores", use_container_width=True, on_click=lambda: cambiar_pagina("Capacitacion de Instructores"))               
+            st.button("Capacitación SWAT", use_container_width=True, on_click=lambda: cambiar_pagina("Capacitacion SWAT"))                
 
             st.subheader("Entrenamientos", divider="red")
-            st.button("Prácticas de Tiro", use_container_width=True,on_click=cambiar_pagina("Practica de Tiro"))                
-            st.button("Práctica de Conducción", use_container_width=True,on_click=cambiar_pagina("Practica de Conduccion"))
-            st.button("Entrenamiento Fisico", use_container_width=True,on_click=cambiar_pagina("Entrenamiento Fisico"))
+            st.button("Prácticas de Tiro", use_container_width=True,on_click=lambda: cambiar_pagina("Practica de Tiro"))                
+            st.button("Práctica de Conducción", use_container_width=True, on_click=lambda: cambiar_pagina("Practica de Conduccion"))
+            st.button("Entrenamiento Fisico", use_container_width=True,on_click=lambda: cambiar_pagina("Entrenamiento Fisico"))
                 
             st.subheader("Simulacros", divider="red")
-            st.button("Persecución y aprehensión vehicular", use_container_width=True,on_click=cambiar_pagina("Persecución y aprehensión vehicular"))                
-            st.button("Intervención a Domicilio", use_container_width=True,on_click=cambiar_pagina("Intervención a Domicilio"))                
-            st.button("Simulacros con Rehenes", use_container_width=True,on_click=cambiar_pagina("Simulacros con Rehenes"))
+            st.button("Persecución y aprehensión vehicular", use_container_width=True,on_click=lambda: cambiar_pagina("Persecución y aprehensión vehicular"))                
+            st.button("Intervención a Domicilio", use_container_width=True,on_click=lambda: cambiar_pagina("Intervención a Domicilio"))                
+            st.button("Simulacros con Rehenes", use_container_width=True,on_click=lambda: cambiar_pagina("Simulacros con Rehenes"))
                         
             st.markdown("""<div 
                         style='
                         color: #000000;
                         border-bottom: 4px solid blue;'>
             </div>""",unsafe_allow_html=True)
-            st.button("Edicion", use_container_width=True, on_click=cambiar_pagina("edicion"))
+            st.button("Edicion", use_container_width=True, on_click=lambda: cambiar_pagina("edicion"))
             
         st.markdown("""<div
                     style='
@@ -72,6 +73,8 @@ def main():
         simulacro_rehenes()
     elif st.session_state.pagina_actual == "edicion":
         edicion()
+    # elif st.session_state.pagina_actual == "edicion":
+    #     edicion()
     
     
     # pages = {
