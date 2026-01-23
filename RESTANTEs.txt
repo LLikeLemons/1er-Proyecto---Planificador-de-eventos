@@ -6,8 +6,17 @@ eliminar repeticiones de domingo e invalidar fechas de domingo -----------------
 
 finalizar las demas paginas
 
-correccion de indices del almacen de fechas tras eliminar evento
+correccion de indices del almacen de fechas tras eliminar evento  ------------------------
 
-crear pagina para buscar colisiones de recursos
+crear pagina para buscar colisiones de recursos  ------------------------------------------
 
-ajustar las opciones de edicion para ponerlas en la pagina principal
+ajustar las opciones de edicion para ponerlas en la pagina principal ----------------------
+
+corregir el path de data.json  
+
+terminar de corregir edicion
+
+terminar de corregir proximo intervalo ----------------------------------------------------
+
+CB al cuadrado = DB al cuadrado + CD al cuadrado
+CB al cuadrado = AB al cuadrado - AC al cuadrado

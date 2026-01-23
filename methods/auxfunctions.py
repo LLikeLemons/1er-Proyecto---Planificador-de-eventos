@@ -1,6 +1,7 @@
 import streamlit as st
 from methods.recursos_eventos import Event
 from datetime import date, datetime, time, timedelta
+from copy import deepcopy
 #==========================|   CAMBIO DE VARIABLES GLOBALES PRINCIPALES   |========================================================================
 
 def cambiar_pagina(nombre_pagina: str):
@@ -75,8 +76,6 @@ def merge2(l:int,m:int,r:int,list:list[date]):
 #------------------|   BUSQUEDA DE COINCIDENCIAS DE FECHAS EN EVENTOS   |-----------------------------------------------------------
 
 def binary_search(left: int, right: int, list: list[tuple[date,int]], element: date):
-    st.write(list)                                                                                             #########
-    st.write(element)                                                                                        ###########
     indexes = [0,0]
     main_indexes = []
     if list[0][0] == element:
@@ -89,8 +88,6 @@ def binary_search(left: int, right: int, list: list[tuple[date,int]], element: d
         indexes[1] = binary_search_last(left, right, list, element)
     if indexes[0] == -1:
         return False
-    st.write(f"PRimer indice {indexes[0]}")                                                                        ########
-    st.write(f"Ultimo indice {indexes[1]}")                                                                          ########
     for i in range(indexes[0],indexes[1]+1):
         main_indexes.append(list[i][1])
     return main_indexes
@@ -132,35 +129,34 @@ def manage_resources(total_resources: dict[int], event_resources:dict[int]):
 
 def resource_collition(total_resources: dict[int], event_resources: dict[int]):
     collition = False
-    st.write(total_resources)                                                                                     ##########
     for k in event_resources.keys():
         total_resources[k] -= event_resources[k]
         if total_resources[k] < 0:
-            collition = True
-    st.write(total_resources)                                                                                      ##########
-    
+            collition = True   
     return collition
-def collition_search(event,resources):
+
+def collition_search(event,resources,looking_gap=False,date_gap=None):
     collitions_result = []
+    if not looking_gap:
+        date_input = event.date
+    else:
+        date_input = date_gap
     if st.session_state.dates:
-        for i in range(len(event.date)):
-            total_resources = resources
+        for i in range(len(date_input)):
+            total_resources = deepcopy(resources)
             avaliable_place = True
-            values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, event.date[i])
-            st.write(values_list)                                                                                  #########
+            values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, date_input[i])
             if values_list:   
                 for j in range(len(values_list)):
-                    st.write(st.session_state.events[values_list[j]].time)                                         #########
-                    st.write(hours_collition(st.session_state.events[values_list[j]].time, event.time))            #######
                     if hours_collition(st.session_state.events[values_list[j]].time, event.time):
                         manage_resources(total_resources,st.session_state.events[values_list[j]].resources)
                         if st.session_state.events[values_list[j]].place == event.place:
                             avaliable_place = False
                 if resource_collition(total_resources,event.resources):
                     
-                    collitions_result.append((event.date[i],total_resources,avaliable_place))
+                    collitions_result.append((date_input[i],total_resources,avaliable_place))
                 elif not avaliable_place:
-                    collitions_result.append((event.date[i],-1, False))            
+                    collitions_result.append((date_input[i],-1, False))            
         return collitions_result
     else:
         return collitions_result
@@ -206,8 +202,52 @@ def frecuency_type(event):
 
     
     
-def next_gap():
-    return "Hola"
+def next_gap(event,collition,resources):
+    datetime1 = datetime.now()
+    datetime1 = date(datetime1.year,datetime1.month,datetime1.day)
+    first_date = event.date[0]
+    if not collition:
+            return event.date[0]
+    else:
+        while True: 
+            if event.frecuency_type == "Frecuencia mensual":
+                first_date = date(first_date.year,first_date.month+1,first_date.day)
+            elif event.frecuency_type == "Frecuencia semanal":
+                first_date+=timedelta(days=7)
+            else:
+                if not first_date.weekday() == 5:
+                    first_date+=timedelta(days=1)  
+                else:
+                    first_date+=timedelta(days=2)       
+            date_input = []
+            if event.frecuency_type == "Frecuencia mensual":
+                next_date = first_date
+                for i in range(event.frecuency):
+                    next_date = date(next_date.year,next_date.month+1,next_date.day)
+                    date_input.append(next_date)
+            elif event.frecuency_type == "Rango de días":
+                difference = event.date[-1] - event.date[0]
+                tuple_1 = (first_date,first_date+timedelta(difference))
+                date_input = range_addition(tuple_1)
+            elif event.frecuency_type == "Frecuencia semanal":
+                weekday = event.date[0].weekday()
+                attempts = event.week_days[:-1]
+                next_date = first_date
+                for i in range(len(attempts)):
+                    if attempts[i]:
+                        next_date = first_date + timedelta(days=(i-weekday)%7)
+                        date_input.append(next_date)
+                        st.text(i-weekday)
+                        for j in range(event.frecuency):
+                            next_date += timedelta(days=7)
+                            date_input.append(next_date)
+            else:
+                date_input = [first_date]
+
+            if not collition_search(event,resources,True,date_input):
+                return first_date
+            
+    
 def range_addition(range_input):
     tuple_1 = range_input[0]
     date_input = []

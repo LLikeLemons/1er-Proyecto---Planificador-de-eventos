@@ -4,41 +4,52 @@ from datetime import datetime, date, time, timedelta
 from methods.auxfunctions import *
 
 
-def practica_conduccion(editor=False,index=None):
+def practica_conduccion(editor=False,editable_event=None):
     col0, col1 = st.columns([0.85,0.15], vertical_alignment="center")
     col2, col3 = st.columns([0.85,0.15], vertical_alignment="center")
     col4, col11, col5  = st.columns([0.51,0.34,0.15], vertical_alignment="center")
     col6, col7, col8 = st.columns([0.25,0.25,0.5],border=True)
-    date_invalidation = True
+    date_invalidation = False
+    clock = False
     
-    st.set_page_config(layout="wide")
+    #st.set_page_config(layout="wide")
     col0.header("PLANIFICACIÓN DE EVENTO",divider="red")
     col2.subheader("Entrenamientos: Práctica de Conducción", divider="red")
 
 #=========| VARIABLES DE EDITOR PARA CONFIGURACION PREDETERMINADA   |=============================================================================
+    frecuency_options = ["Evento único", "Frecuencia semanal", "Frecuencia mensual", "Rango de días"]
+    places_options = ["Pista de automovilismo", "Centro de entrenamiento", "Academia Policial"]
     if editor:
-        editable_event = st.session_state.events[index]
-        index_variable = ["Evento único", "Frecuencia semanal", "Frecuencia mensual", "Rango de días"].index(editable_event.frecuency_type)
-        z4_variable = editable_event.resources["Vehiculo Z4"]
-        inter_variable = editable_event.resources["Vehiculo Interceptor"]
-        mary_variable = editable_event.resources["Moto Mary-Policia"]
+        
+        index_variable = frecuency_options.index(editable_event.frecuency_type)
+        z4_variable = editable_event.resources["Vehículo Z4"]
+        inter_variable = editable_event.resources["Vehículo Interceptor"]
+        mary_variable = editable_event.resources["Moto Mary-Policía"]
         cono_variable = editable_event.resources["Conos"]
-        inst_variable = editable_event.resources["Instructores"]
-        place_variable = ["Pista de automovilismo", "Centro de entrenamiento", "Academia Policial"].index(editable_event.place)
+        place_variable = places_options.index(editable_event.place)
+        time_variable1 = editable_event.time[0]
+        time_variable2 = editable_event.time[1]
+        frecuency_variable = editable_event.frecuency
+        first_date_variable = editable_event.date[0]
+        tuple_date_variable = editable_event.date[0]
     else:
         index_variable = 0
         z4_variable = 0
         inter_variable = 0
         mary_variable = 0
         cono_variable = 0
-        inst_variable = inter
         place_variable = 0
+        time_variable1 = "now"
+        time_variable2 = "now"
+        frecuency_variable = 0
+        first_date_variable = "today"
+        tuple_date_variable = ["today","today"]
 
 
     #============|  TIPO DE FRECUENCIAS   |========================================================================================================
     with col4:
         frecuency_type = st.radio("Tipo de Horario y Repetición",
-                    ["Evento único", "Frecuencia semanal", "Frecuencia mensual", "Rango de días"],
+                    frecuency_options,
                     index=index_variable, width="stretch", horizontal=True)
     
     #============|   CONFIGURACION DE RECURSOS   |==================================================================================================
@@ -47,13 +58,13 @@ def practica_conduccion(editor=False,index=None):
         inter = st.number_input("Cantidad de vehículos Interceptor", value=inter_variable, min_value=0,max_value=5)
         mary = st.number_input("Cantidad de motos Mary-Policía", value=mary_variable, min_value=0, max_value=20)
     with col6:
-        cono = st.number_input("Cantidad de conos", value=0, min_value=cono_variable, max_value=20)
-        inst = st.number_input("Cantidad de Instructores", value=inst_variable, min_value=inst_variable, max_value= 30, help="Debe haber al menos un instructor por vehiculo" \
+        cono = st.number_input("Cantidad de conos", value=cono_variable, min_value=0, max_value=20)
+        inst = st.number_input("Cantidad de Instructores", value=inter, min_value=inter, max_value= 30, help="Debe haber al menos un instructor por vehiculo" \
         " interceptor")
-        option = ["Pista de automovilismo", "Centro de entrenamiento", "Academia Policial"]
+        
         if inter > 0:
-            option = [option[0]]
-        place = st.selectbox("Lugar de práctica", option,
+            places_options = [places_options[0]]
+        place = st.selectbox("Lugar de práctica", places_options,
                      help="Por cuestiones de seguridad los vehículos Interceptor solo tienen permitido manejarse  \n"
                      "en la pista de automovilismo",index=place_variable)
         
@@ -69,34 +80,38 @@ def practica_conduccion(editor=False,index=None):
     #=====|   CONFIGURACION POR TIPO DE FRECUENCIA   |=============================================================================================
     frecuency = 0
     validations = [0,0,0,0,0,0,0]
+    attempts = [0,0,0,0,0,0,0]
     if frecuency_type == "Evento único":
-        first_date = col8.date_input("Fecha", value="today", min_value="today", help = date_help)
-        time_1 = col8.time_input("Hora de inicio", help=time1_help)
-        time_2 = col8.time_input("Hora de conclusión", help=time2_help)
+        first_date = col8.date_input("Fecha", value=first_date_variable , min_value="today", help = date_help)
+        time_1 = col8.time_input("Hora de inicio", value= time_variable1, help=time1_help)
+        time_2 = col8.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
         date_input = [first_date]
 
     elif frecuency_type == "Rango de días":
-        range_input = col8.date_input("Rango de fechas", value=["today","today"], min_value="today", help= "Se descartaran todas las fechas del intervalo que sean domingo")
-        time_1 = col8.time_input("Hora de inicio", help=time1_help)
-        time_2 = col8.time_input("Hora de conclusión", help=time2_help)
+        range_input = col8.date_input("Rango de fechas", value=tuple_date_variable, min_value="today", help= "Se descartaran todas las fechas del intervalo que sean domingo")
+        time_1 = col8.time_input("Hora de inicio", value= time_variable1, help=time1_help)
+        time_2 = col8.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
         date_input = range_addition(range_input)
-        st.write(date_input)
         
 
     elif frecuency_type == "Frecuencia semanal":
         col9, col10 = col8.columns([0.3,0.7])
         prechecks = [0,0,0,0,0,0,0]
         
-        first_date = col10.date_input("Fecha inicial", value="today", min_value="today", help=date_help)
+        first_date = col10.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
 
-        time_1 = col10.time_input("Hora de inicio",value="now", help=time1_help)
-        time_2 = col10.time_input("Hora de conclusión",value="now", help=time2_help)
+        time_1 = col10.time_input("Hora de inicio",value= time_variable1,  help=time1_help)
+        time_2 = col10.time_input("Hora de conclusión",value= time_variable2,  help=time2_help)
 
         weekday = first_date.weekday()
-        for i in range(7):
-            if i == weekday:
-                prechecks[i] = True
-                validations[i] = True
+        if editor:
+            prechecks = editable_event.week_days
+            validations[editable_event.date[0].weekday()] = True
+        else:            
+            for i in range(7):
+                if i == weekday:
+                    prechecks[i] = True
+                    validations[i] = True
         
         with col9:
             Mo = st.checkbox("Lunes", prechecks[0], disabled=validations[0])
@@ -105,7 +120,7 @@ def practica_conduccion(editor=False,index=None):
             Th = st.checkbox("Jueves", prechecks[3], disabled=validations[3])
             Fr = st.checkbox("Viernes", prechecks[4], disabled=validations[4])
             Sa = st.checkbox("Sábado", prechecks[5], disabled=validations[5])
-        frecuency = col5.slider("Cantidad de semanas", max_value=12)
+        frecuency = col5.slider("Cantidad de semanas",value=frecuency_variable, max_value=12)
         attempts = [Mo,Tu,We,Th,Fr,Sa]
         date_input = []
         next_date = first_date
@@ -113,22 +128,21 @@ def practica_conduccion(editor=False,index=None):
             if attempts[i]:
                 next_date = first_date + timedelta(days=(i-weekday)%7)
                 date_input.append(next_date)
-                st.text(i-weekday)
                 for j in range(frecuency):
                     next_date += timedelta(days=7)
                     date_input.append(next_date)
         st.text(date_input)
 
     elif frecuency_type == "Frecuencia mensual":            
-        first_date = col8.date_input("Fecha inicial", value="today", min_value="today", help=date_help)
+        first_date = col8.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
         
-        time_1 = col8.time_input("Hora de inicio",help=time1_help)
-        time_2 = col8.time_input("Hora de conclusión",help=time2_help)        
-        frecuency = col5.slider("Cantidad de meses",max_value=12)
+        time_1 = col8.time_input("Hora de inicio",value= time_variable1, help=time1_help)
+        time_2 = col8.time_input("Hora de conclusión",value= time_variable2, help=time2_help)        
+        frecuency = col5.slider("Cantidad de meses",value=frecuency_variable,max_value=12)
         date_input = [first_date]
         next_date = first_date
         for i in range(frecuency):
-            next_date += timedelta(months=1)
+            next_date = date(next_date.year,next_date.month+1,next_date.day)
             date_input.append(next_date)
 
 
@@ -143,20 +157,23 @@ def practica_conduccion(editor=False,index=None):
         "Vehículo Interceptor": inter,
         "Vehículo Z4": z4
     }
-    new_event = Event(date_input,(time_1,time_2),"Práctica de Conducción",dict,place,frecuency_type,frecuency,validations)
+    new_event = Event(date_input,(time_1,time_2),"Práctica de Conducción",dict,place,frecuency_type,frecuency,attempts)
     
 #==========|   BUSQUEDA DE COLISIONES E INVALIDACION DEL EVENTO   |===============================================================================
     resources = st_resources()
     collitions_list = collition_search(new_event,resources)
-    st.write(st_resources())                                                                                    #########
-    if not collitions_list:
-       date_invalidation = False
+    if collitions_list:
+       date_invalidation = True
     actual_time = datetime.now()
     actual_time = time(actual_time.hour,actual_time.minute)   
-    if time_2 <= time_1 or time_1 == actual_time or time_2 == actual_time:
-        date_invalidation = True
+    # if time_2 <= time_1 or time_1 == actual_time or time_2 == actual_time:
+    #     date_invalidation = True
+    #     clock = True
+    st.write(first_date.weekday())
     if first_date.weekday() == 6:
+        st.write("True")
         date_invalidation == True
+        clock = True
 
     with col11.popover("Colisiones e Intervalos", width="stretch"):
         if collitions_list:
@@ -174,7 +191,7 @@ def practica_conduccion(editor=False,index=None):
                     border-radius: 8px;
                     color: darkgreen;
                     text-align: center;
-                    '>{next_gap()}
+                    '>{next_gap(new_event,collitions_list,resources) if not clock else "Valide primero el horario o  <br> deseleccione domingo como fecha"}
                     </div>""",unsafe_allow_html=True)
 
 #============|   BOTONES DE ACCION   |==============================================================================================================
