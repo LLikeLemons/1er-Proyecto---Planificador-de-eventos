@@ -11,31 +11,31 @@ def edition_selector(index: int,edit=False,eliminate=False,):
             
             if type == "Manejo de Helicóptero":
                 #cambiar_pagina("Manejo de Helicoptero")
-                manejo_helicoptero(True,event)
+                manejo_helicoptero(True,event,index)
             elif type == "Capacitación de Instructores":
                 #cambiar_pagina("Capacitacion de Instructores")
-                capacitacion_intructor(True,event)
+                capacitacion_intructor(True,event,index)
             elif type == "Capacitación SWAT":
                 #cambiar_pagina("Capacitacion SWAT")
-                capacitacion_swat(True,event)
+                capacitacion_swat(True,event,index)
             elif type == "Práctica de Tiro":
                 #cambiar_pagina("Practica de Tiro")
-                practica_tiro(True,event)
+                practica_tiro(True,event,index)
             elif type == "Práctica de Conducción":
                 #cambiar_pagina("Practica de Conduccion")
-                practica_conduccion(True,event)
+                practica_conduccion(True,event,index)
             elif type == "Entrenamiento Físico":
                 #cambiar_pagina("Entrenamiento Fisico")
-                entrenamiento_fisico(True,event)
+                entrenamiento_fisico(True,event,index)
             elif type == "Persecución y aprehensión vehicular":
                 #cambiar_pagina("Persecución y aprehensión vehicular")
-                persecusion_vehiculo(True,event)
+                persecusion_vehiculo(True,event,index)
             elif type == "Intervención a Domicilio":
                 #cambiar_pagina("Intervención a Domicilio")
-                intervencion_domicilio(True,event)
+                intervencion_domicilio(True,event,index)
             else:
                 #cambiar_pagina("Simulacros con Rehenes")
-                simulacro_rehenes(True,event)
+                simulacro_rehenes(True,event,index)
            
 def week_days_decoding(list: list[int]):
     frecuency = ""
@@ -68,7 +68,7 @@ def recalibrate_dates_index(index):
 #===========|   PARA LOS RECURSOS   |============================
 
 def collition_search2(date,time,resources):
-    total_places = []
+    total_places = ["Academia Policial","Centro de entrenamiento","Pista de automovilismo"]
     if st.session_state.dates:        
         total_resources = deepcopy(resources)
         values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, date)
@@ -77,5 +77,5 @@ def collition_search2(date,time,resources):
                 if hours_collition(st.session_state.events[values_list[j]].time, time):
                     manage_resources(total_resources,st.session_state.events[values_list[j]].resources)
                     if st.session_state.events[values_list[j]].place in total_places:
-                        total_places -= st.session_state.events[values_list[j]].place
+                        total_places.remove(st.session_state.events[values_list[j]].place)
     return total_resources, total_places

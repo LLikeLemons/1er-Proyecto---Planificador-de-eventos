@@ -14,17 +14,6 @@ def agregar_fecha(fechas_evento: list[date]):
         st.session_state.dates.append(temporal)
     smart_dates_sorter(0,len(st.session_state.dates)-1,st.session_state.dates)
 
-#==================================================================================================================================================
-
-def opciones_salida(new_event):
-    col1, col2 = st.columns(2,width=270,border=True)
-    with col1:
-        if st.button("Cancelar",use_container_width=True):
-            cambiar_pagina("inicio")
-    with col2:
-        if st.button("Confirmar",use_container_width=True):
-            agregar_evento(new_event)
-            cambiar_pagina("inicio")
 
 #======================|   ORDENADOR DE FECHAS   |=================================================================================================
 
@@ -114,7 +103,7 @@ def binary_search_last(left: int, right: int, list: list[tuple[date,int]], eleme
     else:
         return binary_search_last(left,middle,list,element)
 
-#-------------------------------------------------------------------------------------------------------------------------------
+#-----------|   FUNCIONES AUXILIARES DE COLLITION_SEARCH   |------------------------------------------------------------------------------------
 
 def hours_collition(second_event_time: tuple[time], main_event_time: tuple[time]):
     se = second_event_time
@@ -135,7 +124,20 @@ def resource_collition(total_resources: dict[int], event_resources: dict[int]):
             collition = True   
     return collition
 
-def collition_search(event,resources,looking_gap=False,date_gap=None):
+#-----------------------------------------------------------------------------------------------------------------------------------------------
+def collition_search(event,resources,looking_gap=False,date_gap=None,edition=False,editable_event=None,index=None):
+    if edition:
+        program_dates = deepcopy(st.session_state.dates)
+        for i in range(len(program_dates)):
+            if program_dates[i][1] == index:
+                del program_dates[i]
+        program_events = deepcopy(st.session_state.events)
+        for i in range(len(program_events)):
+            if i == index:
+                del program_events[i]
+    else:
+        program_dates = st.session_state.dates
+        program_events = st.session_state.events
     collitions_result = []
     if not looking_gap:
         date_input = event.date
@@ -178,7 +180,8 @@ def decoding_collitions(collitions, event):
 
 
 
-#==============|   BUSQUEDA DE PROXIMO INTERVAlO DISPONIBLE   |===================================================================
+#==============|   BUSQUEDA DE PROXIMO INTERVAlO DISPONIBLE   |===================================================================================
+#-------------|   FUNCIONES AUXILIARES DE NEXT_GAP   |--------------------------------------------------------------------------------------------
 def weekdays_search(event):
     weekdays = []
     for x in event.dates:
@@ -188,6 +191,7 @@ def weekdays_search(event):
     for x in weekdays:
         validation[x] = 1
     return validation
+
 def frecuency_type(event):
     rest = event.dates[-1] - event.dates[0]
     if len(event.dates) == 1:
@@ -197,11 +201,19 @@ def frecuency_type(event):
     elif rest.days%28==0 or rest.days%29==0 or rest.days%30==0 or rest.days%31==0:
         return 2
     else:
-        pass
+        pass    
 
+def range_addition(range_input):
+    tuple_1 = range_input[0]
+    date_input = []
+    while tuple_1 < range_input[1]:
+        if tuple_1.weekday() != 6:
+            date_input.append(tuple_1)
+        tuple_1 += timedelta(days=1)
+    return date_input
 
-    
-    
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
 def next_gap(event,collition,resources):
     datetime1 = datetime.now()
     datetime1 = date(datetime1.year,datetime1.month,datetime1.day)
@@ -245,14 +257,7 @@ def next_gap(event,collition,resources):
                 date_input = [first_date]
 
             if not collition_search(event,resources,True,date_input):
-                return first_date
-            
-    
-def range_addition(range_input):
-    tuple_1 = range_input[0]
-    date_input = []
-    while tuple_1 < range_input[1]:
-        if tuple_1.weekday() != 6:
-            date_input.append(tuple_1)
-        tuple_1 += timedelta(days=1)
-    return date_input
+                return first_date            
+
+#/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

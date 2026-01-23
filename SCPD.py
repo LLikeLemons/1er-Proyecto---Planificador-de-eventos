@@ -1,7 +1,7 @@
 import streamlit as st
 from paginas_eventos import *
 from methods import *
-from paginas_admin import edicion, resources_search
+from paginas_admin import edicion, resources_search, edition_selector
 
 def main():
 #========|   CARGA DE DATOS INICIAL   |============================================================================================================
@@ -21,19 +21,21 @@ def main():
     if st.session_state.pagina_actual == "inicio":
         tab1,tab2,tab3 = st.tabs(["INICIO", "RECURSOS", "EDICION"])
         with tab1:
-            st.markdown("""<div
-                        style='
-                        color: red;
-                        font-size: 80px;
-                        font-weight: bold;
-                        text-align: center;'> PRUEBA DE PAGINA
-            </div>""", unsafe_allow_html=True)
+            st.markdown("""<div style='
+                border-bottom: 4px solid ;
+                border-image: linear-gradient(130deg, black, darkblue) 1;
+                font-size: 80px;
+                text-align: center;
+                text-weight: bold;
+                '>PRUEBA DE PAGINA
+                </div>""",unsafe_allow_html=True)
             st.text(st.session_state.dates)
             st.text(st.session_state.events)
         with tab2:
             resources_search()
         with tab3:
             edicion()
+                
 
 
 #========|   MENU DE OPCIONES DE EVENTOS EN LA SIDEBAR   |========================================================================================
@@ -54,14 +56,6 @@ def main():
             st.button("Persecución y aprehensión vehicular", use_container_width=True,on_click=lambda: cambiar_pagina("Persecución y aprehensión vehicular"))                
             st.button("Intervención a Domicilio", use_container_width=True,on_click=lambda: cambiar_pagina("Intervención a Domicilio"))                
             st.button("Simulacros con Rehenes", use_container_width=True,on_click=lambda: cambiar_pagina("Simulacros con Rehenes"))
-                        
-            st.markdown("""<div 
-                        style='
-                        color: #000000;
-                        border-bottom: 4px solid blue;'>
-            </div>""",unsafe_allow_html=True)
-            st.button("Edicion", use_container_width=True, on_click=lambda: cambiar_pagina("edicion"))
-
 
 #===============|   CAMBIOS DE PAGINAS   |=========================================================================================================
     elif st.session_state.pagina_actual == "Manejo de Helicoptero":
@@ -83,7 +77,9 @@ def main():
     elif st.session_state.pagina_actual == "Simulacros con Rehenes":
         simulacro_rehenes()
     elif st.session_state.pagina_actual == "edicion":
-        st.write("NO O ENTIEndo")
+        edition_selector(st.session_state.edition_values[0],
+                         st.session_state.edition_values[1],
+                         st.session_state.edition_values[2])
     
 if __name__ == "__main__":
     main()

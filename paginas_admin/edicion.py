@@ -4,8 +4,10 @@ from datetime import datetime, date, time, timedelta
 from .opciones_admin import *
 
 def edicion():
-    containter = st.container(horizontal_alignment="center",vertical_alignment="top", horizontal=True,height="stretch")
-    st.markdown("""<div style='border-top: 8px solid red'></div>""",unsafe_allow_html=True)
+    containter, = st.columns(1)
+    st.markdown("""<div style='border-top: 4px solid ;
+                border-image: linear-gradient(45deg, blue, lightblue) 1;
+                '></div>""",unsafe_allow_html=True)
     options = []
     captions = []
     for i in range(len(st.session_state.events)):
@@ -39,12 +41,22 @@ def edicion():
     )
 
     with containter:
-        col1,col2 = st.columns(2)    
+        
         if selection == None:
-            containter.title("SELECCIONE UN EVENTO     ")
+            st.markdown("""<div style='
+                font-size: 80px;
+                text-align: center;
+                '>SELECCIONE UN EVENTO
+                </div>""",unsafe_allow_html=True)
+            
         else:
-            st.session_state.index = options.index(selection)
-            col1.button(label="Editar",type="primary",width="stretch")
-            col2.button(label="Eliminar",width="stretch")
+            col1,col2 = st.columns(2)    
+            index = options.index(selection)
+            if col1.button(label="Editar",type="primary",width="stretch"):
+                st.session_state.edition_values = (index,True,False)
+                cambiar_pagina("edicion")
+            if col2.button(label="Eliminar",width="stretch"):
+                st.session_state.edition_values = (index,False,True)
+                cambiar_pagina("edicion")
 
 

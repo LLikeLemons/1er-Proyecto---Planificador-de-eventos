@@ -4,7 +4,7 @@ from datetime import datetime, date, time, timedelta
 from methods.auxfunctions import *
 
 
-def practica_conduccion(editor=False,editable_event=None):
+def practica_conduccion(editor=False,editable_event=None, index=None):
     col0, col1 = st.columns([0.85,0.15], vertical_alignment="center")
     col2, col3 = st.columns([0.85,0.15], vertical_alignment="center")
     col4, col11, col5  = st.columns([0.51,0.34,0.15], vertical_alignment="center")
@@ -12,7 +12,6 @@ def practica_conduccion(editor=False,editable_event=None):
     date_invalidation = False
     clock = False
     
-    #st.set_page_config(layout="wide")
     col0.header("PLANIFICACIÓN DE EVENTO",divider="red")
     col2.subheader("Entrenamientos: Práctica de Conducción", divider="red")
 
@@ -131,7 +130,6 @@ def practica_conduccion(editor=False,editable_event=None):
                 for j in range(frecuency):
                     next_date += timedelta(days=7)
                     date_input.append(next_date)
-        st.text(date_input)
 
     elif frecuency_type == "Frecuencia mensual":            
         first_date = col8.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
@@ -164,17 +162,18 @@ def practica_conduccion(editor=False,editable_event=None):
     collitions_list = collition_search(new_event,resources)
     if collitions_list:
        date_invalidation = True
-    actual_time = datetime.now()
-    actual_time = time(actual_time.hour,actual_time.minute)   
-    # if time_2 <= time_1 or time_1 == actual_time or time_2 == actual_time:
-    #     date_invalidation = True
-    #     clock = True
-    st.write(first_date.weekday())
-    if first_date.weekday() == 6:
-        st.write("True")
-        date_invalidation == True
+
+    actual_datetime = datetime.now()
+    actual_date = date(actual_datetime.year,actual_datetime.month,actual_datetime.day)
+    actual_time = time(actual_datetime.hour,actual_datetime.minute)  
+    if time_2 <= time_1 or ((time_1 <= actual_time or time_2 <= actual_time) and first_date == actual_date):
+        date_invalidation = True
         clock = True
 
+    if first_date.weekday() == 6:
+        date_invalidation == True
+        clock = True
+#==========|   MUESTRA DE COLISIONES   |============================================================================================================
     with col11.popover("Colisiones e Intervalos", width="stretch"):
         if collitions_list:
             st.warning("Colisiones")
@@ -200,10 +199,10 @@ def practica_conduccion(editor=False,editable_event=None):
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
         agregar_evento(new_event)
         agregar_fecha(date_input)
-        dict_dates = st.session_state.dates
+        dict_dates = deepcopy(st.session_state.dates)
         for i in range(len(dict_dates)):
             dict_dates[i] = date_event_dict(dict_dates[i])
-        dict_events = st.session_state.events
+        dict_events = deepcopy(st.session_state.events)
         for i in range(len(dict_events)):
             dict_events[i] = dict_events[i].to_dict()
         
