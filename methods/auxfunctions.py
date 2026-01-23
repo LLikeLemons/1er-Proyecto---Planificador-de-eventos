@@ -1,5 +1,6 @@
 import streamlit as st
 from methods.recursos_eventos import Event
+from methods.recalibrate import recalibrate_dates_index
 from datetime import date, datetime, time, timedelta
 from copy import deepcopy
 #==========================|   CAMBIO DE VARIABLES GLOBALES PRINCIPALES   |========================================================================
@@ -125,16 +126,23 @@ def resource_collition(total_resources: dict[int], event_resources: dict[int]):
     return collition
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------
-def collition_search(event,resources,looking_gap=False,date_gap=None,edition=False,editable_event=None,index=None):
-    if edition:
-        program_dates = deepcopy(st.session_state.dates)
-        for i in range(len(program_dates)):
-            if program_dates[i][1] == index:
-                del program_dates[i]
-        program_events = deepcopy(st.session_state.events)
-        for i in range(len(program_events)):
-            if i == index:
-                del program_events[i]
+def collition_search(event,resources,looking_gap=False,date_gap=None,editor=False,editable_event=None,index=None):
+    if editor:
+        program_predates = deepcopy(st.session_state.dates)
+        program_dates = []
+        program_dates = recalibrate_dates_index(index,program_predates)
+        st.write(program_predates)
+        st.write(program_dates)
+        
+
+        program_preevents = deepcopy(st.session_state.events)
+        program_events = []
+        for i in range(len(program_preevents)):
+            if i != index:
+                program_events.append(program_preevents[i])
+        st.write(program_preevents)
+        st.write(program_events)
+                
     else:
         program_dates = st.session_state.dates
         program_events = st.session_state.events
@@ -143,16 +151,17 @@ def collition_search(event,resources,looking_gap=False,date_gap=None,edition=Fal
         date_input = event.date
     else:
         date_input = date_gap
-    if st.session_state.dates:
+    if program_dates:
         for i in range(len(date_input)):
             total_resources = deepcopy(resources)
             avaliable_place = True
-            values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, date_input[i])
+            values_list = binary_search(0,len(program_dates)-1,program_dates, date_input[i])
+            st.write(values_list)
             if values_list:   
                 for j in range(len(values_list)):
-                    if hours_collition(st.session_state.events[values_list[j]].time, event.time):
-                        manage_resources(total_resources,st.session_state.events[values_list[j]].resources)
-                        if st.session_state.events[values_list[j]].place == event.place:
+                    if hours_collition(program_events[values_list[j]].time, event.time):
+                        manage_resources(total_resources,program_events[values_list[j]].resources)
+                        if program_events[values_list[j]].place == event.place:
                             avaliable_place = False
                 if resource_collition(total_resources,event.resources):
                     

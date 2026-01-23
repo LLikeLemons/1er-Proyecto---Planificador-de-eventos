@@ -23,7 +23,7 @@ def main():
         with tab1:
             st.markdown("""<div style='
                 border-bottom: 4px solid ;
-                border-image: linear-gradient(130deg, black, darkblue) 1;
+                border-image: linear-gradient(177deg, black, darkblue) 1;
                 font-size: 80px;
                 text-align: center;
                 text-weight: bold;
@@ -41,7 +41,7 @@ def main():
 #========|   MENU DE OPCIONES DE EVENTOS EN LA SIDEBAR   |========================================================================================
     
         with st.sidebar:
-            st.header("MENU", divider="red")
+            st.header("MENU", divider="red",help="Menu de opciones de eventos a agregar a la agenda")
             st.subheader("Cursos de Capacitación", divider="red")
             st.button("Manejo de Helicóptero", use_container_width=True, on_click=lambda: cambiar_pagina("Manejo de Helicoptero"))                
             st.button("Capacitación de Instructores", use_container_width=True, on_click=lambda: cambiar_pagina("Capacitacion de Instructores"))               

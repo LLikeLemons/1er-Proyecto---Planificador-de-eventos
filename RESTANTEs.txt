@@ -16,7 +16,9 @@ corregir el path de data.json
 
 terminar de corregir edicion
 
-terminar de corregir proximo intervalo ----------------------------------------------------
+terminar de corregir proximo intervalo ---------------------------------------------------- corregido excepto pequenio detalle
+
+agregar lugares en la lista de places en recursos
 
 CB al cuadrado = DB al cuadrado + CD al cuadrado
 CB al cuadrado = AB al cuadrado - AC al cuadrado

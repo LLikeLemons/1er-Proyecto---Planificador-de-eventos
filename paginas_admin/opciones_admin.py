@@ -1,10 +1,12 @@
 import streamlit as st
 from paginas_eventos import *
+from methods import recalibrate_dates_index
+#========|   PARA LA PAGINA DE EDICION   |========================================================================================================
 def edition_selector(index: int,edit=False,eliminate=False,):
         
         if eliminate:
             del st.session_state.events[index]
-            recalibrate_dates_index(index)
+            recalibrate_dates_index(index,st.session_state.dates)
         else:
             event = st.session_state.events[index]
             type = st.session_state.events[index].type
@@ -58,20 +60,17 @@ def week_days_decoding(list: list[int]):
 
     return frecuency
 
-def recalibrate_dates_index(index):
-    for i in range(len(st.session_state.dates)):
-        if st.session_state.dates[i][1] > index:
-            st.session_state.dates[i][1] -= 1
-        elif st.session_state.dates[i][1] == index:
-            del st.session_state.dates[i]
 
-#===========|   PARA LOS RECURSOS   |============================
+
+#===========|   PARA LOS RECURSOS   |=============================================================================================================
 
 def collition_search2(date,time,resources):
     total_places = ["Academia Policial","Centro de entrenamiento","Pista de automovilismo"]
+    total_resources = deepcopy(resources)
     if st.session_state.dates:        
-        total_resources = deepcopy(resources)
+        
         values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, date)
+        st.write(values_list)
         if values_list:   
             for j in range(len(values_list)):  
                 if hours_collition(st.session_state.events[values_list[j]].time, time):

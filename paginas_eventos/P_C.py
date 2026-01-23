@@ -1,7 +1,8 @@
 import streamlit as st
 from methods import *
 from datetime import datetime, date, time, timedelta
-from methods.auxfunctions import *
+
+
 
 
 def practica_conduccion(editor=False,editable_event=None, index=None):
@@ -10,6 +11,9 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
     col4, col11, col5  = st.columns([0.51,0.34,0.15], vertical_alignment="center")
     col6, col7, col8 = st.columns([0.25,0.25,0.5],border=True)
     date_invalidation = False
+    actual_datetime = datetime.now()
+    actual_date = date(actual_datetime.year,actual_datetime.month,actual_datetime.day)
+    actual_time = time(actual_datetime.hour,actual_datetime.minute)  
     clock = False
     
     col0.header("PLANIFICACIÓN DE EVENTO",divider="red")
@@ -72,7 +76,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
     
     
     date_help = "Las fechas no pueden ser domingos"
-    time1_help = "Las hora de inicio y conclusion no pueden ser menores que la hora actual"
+    time1_help = "Las hora de inicio y conclusion no pueden ser menores o iguales que la hora actual si esta marcada la fecha actual"
     time2_help = "La hora de conclusion no puede ser menor o igual que la hora de inicio"
     
 
@@ -88,9 +92,14 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
 
     elif frecuency_type == "Rango de días":
         range_input = col8.date_input("Rango de fechas", value=tuple_date_variable, min_value="today", help= "Se descartaran todas las fechas del intervalo que sean domingo")
+        first_date = range_input[0]
         time_1 = col8.time_input("Hora de inicio", value= time_variable1, help=time1_help)
         time_2 = col8.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
-        date_input = range_addition(range_input)
+        if len(range_input) == 2:
+            date_input = range_addition(range_input)
+        else:
+            date_input = [first_date]
+            frecuency_type = "Evento único"
         
 
     elif frecuency_type == "Frecuencia semanal":
@@ -159,36 +168,35 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
     
 #==========|   BUSQUEDA DE COLISIONES E INVALIDACION DEL EVENTO   |===============================================================================
     resources = st_resources()
-    collitions_list = collition_search(new_event,resources)
+    collitions_list = collition_search(new_event,resources,editor=editor,index=index,editable_event=editable_event)
     if collitions_list:
        date_invalidation = True
 
-    actual_datetime = datetime.now()
-    actual_date = date(actual_datetime.year,actual_datetime.month,actual_datetime.day)
-    actual_time = time(actual_datetime.hour,actual_datetime.minute)  
+    
     if time_2 <= time_1 or ((time_1 <= actual_time or time_2 <= actual_time) and first_date == actual_date):
         date_invalidation = True
         clock = True
 
     if first_date.weekday() == 6:
-        date_invalidation == True
-        clock = True
+        date_invalidation = True
+        clock = True   #====sdafsefasdfa
 #==========|   MUESTRA DE COLISIONES   |============================================================================================================
-    with col11.popover("Colisiones e Intervalos", width="stretch"):
+    with col11.popover("Colisiones e Intervalos", width="stretch", help="La sugerencia del proximo intervalo disponible se hace teniendo"
+    " en cuenta los recursos, cada detalle del tipo de frecuencia y el horario incluidos, exceptuando la fecha inicial escogida"):
         if collitions_list:
             st.warning("Colisiones")
             st.markdown(f"""<div style='
-                    border: 2px solid red;
-                    color: darkred;
+                    border: 2px solid #8e5e24;
+                    color: #8e5e24;
                     border-radius: 8px;
                     text-align: center;
                     '>{decoding_collitions(collitions_list,new_event)}
                     </div>""",unsafe_allow_html=True)
         st.success("Próximo intervalo disponible:")
         st.markdown(f"""<div style='
-                    border: 1.5px solid darkgreen;
+                    border: 1.5px solid #1b865d;
                     border-radius: 8px;
-                    color: darkgreen;
+                    color: #1b865d;
                     text-align: center;
                     '>{next_gap(new_event,collitions_list,resources) if not clock else "Valide primero el horario o  <br> deseleccione domingo como fecha"}
                     </div>""",unsafe_allow_html=True)
@@ -197,6 +205,9 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
+        if editor:
+            del st.session_state.events[index]
+            recalibrate_dates_index(index,st.session_state.dates)
         agregar_evento(new_event)
         agregar_fecha(date_input)
         dict_dates = deepcopy(st.session_state.dates)
@@ -208,4 +219,5 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
         
         storage = [dict_dates,dict_events]
         save_json(storage,"data.json")
+        st.balloons
         cambiar_pagina("inicio")    
