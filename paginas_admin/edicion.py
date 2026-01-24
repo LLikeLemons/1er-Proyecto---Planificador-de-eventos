@@ -49,12 +49,12 @@ def edicion():
                 text-align: center;
                 '>SELECCIONE UN EVENTO
                 </div>""",unsafe_allow_html=True)
-        elif st.session_state.events[options.index(selection)].date[0] <= actual_date:
-            st.markdown("""<div style='
-                font-size: 50px;
-                text-align: center;
-                '>🚫 NO PUEDE EDITAR UN EVENTO EN TRANSCURSO  
-                </div>""",unsafe_allow_html=True)
+        # elif st.session_state.events[options.index(selection)].date[0] <= actual_date:
+        #     st.markdown("""<div style='
+        #         font-size: 50px;
+        #         text-align: center;
+        #         '>🚫 NO PUEDE EDITAR UN EVENTO EN TRANSCURSO  
+        #         </div>""",unsafe_allow_html=True)
         else:
             col1,col2 = st.columns(2)    
             index = options.index(selection)

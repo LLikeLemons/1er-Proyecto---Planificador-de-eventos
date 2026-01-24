@@ -131,8 +131,6 @@ def collition_search(event,resources,looking_gap=False,date_gap=None,editor=Fals
         program_predates = deepcopy(st.session_state.dates)
         program_dates = []
         program_dates = recalibrate_dates_index(index,program_predates)
-        st.write(program_predates)
-        st.write(program_dates)
         
 
         program_preevents = deepcopy(st.session_state.events)
@@ -140,9 +138,7 @@ def collition_search(event,resources,looking_gap=False,date_gap=None,editor=Fals
         for i in range(len(program_preevents)):
             if i != index:
                 program_events.append(program_preevents[i])
-        st.write(program_preevents)
-        st.write(program_events)
-                
+
     else:
         program_dates = st.session_state.dates
         program_events = st.session_state.events
@@ -156,7 +152,6 @@ def collition_search(event,resources,looking_gap=False,date_gap=None,editor=Fals
             total_resources = deepcopy(resources)
             avaliable_place = True
             values_list = binary_search(0,len(program_dates)-1,program_dates, date_input[i])
-            st.write(values_list)
             if values_list:   
                 for j in range(len(values_list)):
                     if hours_collition(program_events[values_list[j]].time, event.time):
@@ -223,50 +218,76 @@ def range_addition(range_input):
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
-def next_gap(event,collition,resources):
-    datetime1 = datetime.now()
-    datetime1 = date(datetime1.year,datetime1.month,datetime1.day)
-    first_date = event.date[0]
-    if not collition:
-            return event.date[0]
+def next_gap(event,resources,editor=False,index=None):
+    #--|  inicializo la variable firstdate   |--------------------------------------------------------------------------------------------
+    datetime0 = datetime.now()
+    datetime1 = date(datetime0.year,datetime0.month,datetime0.day)
+    timed = time(datetime0.hour,datetime0.minute)
+    if event.frecuency_type == "Frecuencia mensual":
+        first_date = event.date[0]
+        datetime2 = date(datetime1.year,datetime2.month+1,datetime1.day)
+        while datetime2 < first_date:
+                first_date = date(first_date.year,first_date.month-1,first_date.day)  
+    elif event.frecuency_type == "Frecuencia semanal":
+        weekday = event.date[0].weekday()    
+        first_date = event.date[0]
+        datetime3 = datetime1 + timedelta(days=7)
+        while datetime3 <= first_date:
+                st.write(f"AQUI ESTA {first_date}")
+                first_date -= timedelta(days=7)
+    elif datetime1.weekday() != 6:
+        first_date = datetime1  
     else:
-        while True: 
-            if event.frecuency_type == "Frecuencia mensual":
-                first_date = date(first_date.year,first_date.month+1,first_date.day)
-            elif event.frecuency_type == "Frecuencia semanal":
-                first_date+=timedelta(days=7)
-            else:
-                if not first_date.weekday() == 5:
-                    first_date+=timedelta(days=1)  
-                else:
-                    first_date+=timedelta(days=2)       
-            date_input = []
-            if event.frecuency_type == "Frecuencia mensual":
-                next_date = first_date
-                for i in range(event.frecuency):
-                    next_date = date(next_date.year,next_date.month+1,next_date.day)
-                    date_input.append(next_date)
-            elif event.frecuency_type == "Rango de días":
-                difference = event.date[-1] - event.date[0]
-                tuple_1 = (first_date,first_date+timedelta(difference))
-                date_input = range_addition(tuple_1)
-            elif event.frecuency_type == "Frecuencia semanal":
-                weekday = event.date[0].weekday()
-                attempts = event.week_days[:-1]
-                next_date = first_date
-                for i in range(len(attempts)):
-                    if attempts[i]:
-                        next_date = first_date + timedelta(days=(i-weekday)%7)
-                        date_input.append(next_date)
-                        st.text(i-weekday)
-                        for j in range(event.frecuency):
-                            next_date += timedelta(days=7)
-                            date_input.append(next_date)
-            else:
-                date_input = [first_date]
+        first_date = datetime1 + timedelta(days=1)       
+        
+#---------|   encuentra el tipo de requisito y la lista de fechas   |------------------------------------------------------------------------------
+    while True: 
+        date_input = []
 
-            if not collition_search(event,resources,True,date_input):
-                return first_date            
+        if event.frecuency_type == "Frecuencia mensual":                         
+            next_date = first_date
+            for i in range(event.frecuency):
+                next_date = date(next_date.year,next_date.month+1,next_date.day)
+                date_input.append(next_date)
+
+        elif event.frecuency_type == "Rango de días":
+            difference = event.date[-1] - event.date[0]
+            tuple_1 = (first_date,first_date+timedelta(difference))
+            date_input = range_addition(tuple_1)
+
+        elif event.frecuency_type == "Frecuencia semanal":            
+            attempts = event.week_days[:-1]
+            next_date = first_date
+            for i in range(len(attempts)):
+                if attempts[i]:
+                    next_date = first_date + timedelta(days=(i-weekday)%7)
+                    date_input.append(next_date)
+                    for j in range(event.frecuency):
+                        next_date += timedelta(days=7)
+                        date_input.append(next_date)
+            
+        else:
+            date_input = [first_date]
+#-------------|   busca la colision   |-----------------------------------------------------------------------------------------------------------
+        if not collition_search(event,resources,True,date_input,editor=editor,index=index):
+            if first_date == datetime1:
+                if event.time[0] > timed and event.time[1] > timed:
+                    return first_date
+            else:
+                return first_date   
+#-------------|   En caso negativo suma valores a la fecha   |------------------------------------------------------------------------------------
+        if event.frecuency_type == "Frecuencia mensual":
+            first_date = date(first_date.year,first_date.month+1,first_date.day)
+
+        elif event.frecuency_type == "Frecuencia semanal":
+            first_date+=timedelta(days=7)
+            
+        else:
+            if first_date.weekday() != 6:
+                first_date+=timedelta(days=1)  
+            else:
+                first_date+=timedelta(days=2)            
+        
 
 #/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

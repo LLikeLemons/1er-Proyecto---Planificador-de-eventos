@@ -1,12 +1,21 @@
 import streamlit as st
 from paginas_eventos import *
-from methods import recalibrate_dates_index
+from methods import recalibrate_dates_index, cambiar_pagina
 #========|   PARA LA PAGINA DE EDICION   |========================================================================================================
 def edition_selector(index: int,edit=False,eliminate=False,):
         
         if eliminate:
             del st.session_state.events[index]
-            recalibrate_dates_index(index,st.session_state.dates)
+            st.session_state.dates = recalibrate_dates_index(index,st.session_state.dates)            
+            dict_dates = deepcopy(st.session_state.dates)
+            for i in range(len(dict_dates)):
+                dict_dates[i] = date_event_dict(dict_dates[i])
+            dict_events = deepcopy(st.session_state.events)
+            for i in range(len(dict_events)):
+                dict_events[i] = dict_events[i].to_dict()        
+            storage = [dict_dates,dict_events]
+            save_json(storage,"data.json")
+            return
         else:
             event = st.session_state.events[index]
             type = st.session_state.events[index].type

@@ -1,7 +1,7 @@
 import streamlit as st
 from paginas_eventos import *
 from methods import *
-from paginas_admin import edicion, resources_search, edition_selector
+from paginas_admin import edicion, resources_search, edition_selector, visualizador_eventos
 
 def main():
 #========|   CARGA DE DATOS INICIAL   |============================================================================================================
@@ -16,10 +16,10 @@ def main():
         st.session_state.events = dict_event(storage[1])
 
 #===============|   PAGINA PRINCIPAL   |=========================================================================================================
-    st.set_page_config(layout="wide")
+    st.set_page_config(layout="wide",page_title="AGENDA",page_icon="📑")
     
     if st.session_state.pagina_actual == "inicio":
-        tab1,tab2,tab3 = st.tabs(["INICIO", "RECURSOS", "EDICION"])
+        tab1,tab2,tab3,tab4 = st.tabs(["INICIO", "RECURSOS", "EDICION","VISUALIZACION"])
         with tab1:
             st.markdown("""<div style='
                 border-bottom: 4px solid ;
@@ -35,6 +35,8 @@ def main():
             resources_search()
         with tab3:
             edicion()
+        with tab4:
+            visualizador_eventos()
                 
 
 
@@ -80,6 +82,8 @@ def main():
         edition_selector(st.session_state.edition_values[0],
                          st.session_state.edition_values[1],
                          st.session_state.edition_values[2])
-    
+        if st.session_state.edition_values[2]:
+            st.write("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+            st.session_state.pagina_actual = "inicio"
 if __name__ == "__main__":
     main()

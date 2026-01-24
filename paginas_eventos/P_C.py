@@ -139,6 +139,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
                 for j in range(frecuency):
                     next_date += timedelta(days=7)
                     date_input.append(next_date)
+        
 
     elif frecuency_type == "Frecuencia mensual":            
         first_date = col8.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
@@ -198,7 +199,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
                     border-radius: 8px;
                     color: #1b865d;
                     text-align: center;
-                    '>{next_gap(new_event,collitions_list,resources) if not clock else "Valide primero el horario o  <br> deseleccione domingo como fecha"}
+                    '>{next_gap(new_event,resources,editor,index) if not clock else "Valide primero el horario o  <br> deseleccione domingo como fecha"}
                     </div>""",unsafe_allow_html=True)
 
 #============|   BOTONES DE ACCION   |==============================================================================================================
@@ -207,7 +208,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
         if editor:
             del st.session_state.events[index]
-            recalibrate_dates_index(index,st.session_state.dates)
+            st.session_state.dates = recalibrate_dates_index(index,st.session_state.dates)
         agregar_evento(new_event)
         agregar_fecha(date_input)
         dict_dates = deepcopy(st.session_state.dates)
@@ -218,6 +219,5 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
             dict_events[i] = dict_events[i].to_dict()
         
         storage = [dict_dates,dict_events]
-        save_json(storage,"data.json")
-        st.balloons
+        save_json(storage,"data.json") 
         cambiar_pagina("inicio")    
