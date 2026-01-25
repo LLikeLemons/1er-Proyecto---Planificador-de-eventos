@@ -6,7 +6,7 @@ def resources_search():
     col9, = st.columns(1)
     col9.markdown("""<div style='
                 border-bottom: 4px solid ;
-                border-image: linear-gradient(45deg, darkblue, blue) 1;
+                border-image: linear-gradient(45deg, blue, lightblue) 1;
                 font-size: 80px;
                 text-align: center;
                 text-weight: bold;
