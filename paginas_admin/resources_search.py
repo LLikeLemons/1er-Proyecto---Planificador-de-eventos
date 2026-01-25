@@ -37,7 +37,6 @@ def resources_search():
                 col1.markdown(f"""<div style='
                     border-bottom: 1px dashed darkblue;
                     text-size: 10px;
-                    color: black;
                     text-align: center;
                     '>{k}: {v}
                     </div>""",unsafe_allow_html=True)
@@ -45,7 +44,6 @@ def resources_search():
                 col2.markdown(f"""<div style='
                     border-bottom: 1px dashed darkblue;
                     text-size: 10px;
-                    color: black;
                     text-align: center;
                     '>{k}: {v}
                     </div>""",unsafe_allow_html=True)
@@ -53,7 +51,6 @@ def resources_search():
                 col3.markdown(f"""<div style='
                     border-bottom: 1px dashed darkblue;
                     text-size: 10px;
-                    color: black;
                     text-align: center;
                     '>{k}: {v}
                     </div>""",unsafe_allow_html=True)
@@ -73,7 +70,6 @@ def resources_search():
                 border-bottom: 1px dashed darkblue;
                 text-size: 10px;
                 text-align: center;
-                color: black;
                 '>{v}
                 </div>""",unsafe_allow_html=True)
     else: 

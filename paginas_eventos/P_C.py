@@ -62,10 +62,11 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
         mary = st.number_input("Cantidad de motos Mary-Policía", value=mary_variable, min_value=0, max_value=20)
     with col6:
         cono = st.number_input("Cantidad de conos", value=cono_variable, min_value=0, max_value=20)
-        inst = st.number_input("Cantidad de Instructores", value=inter, min_value=inter, max_value= 30, help="Debe haber al menos un instructor por vehiculo" \
+        inst = st.number_input("Cantidad de instructores", value=inter, min_value=inter, max_value= 30, help="Debe haber al menos un instructor por vehiculo" \
         " interceptor")
         
         if inter > 0:
+            place_variable = 0
             places_options = [places_options[0]]
         place = st.selectbox("Lugar de práctica", places_options,
                      help="Por cuestiones de seguridad los vehículos Interceptor solo tienen permitido manejarse  \n"
@@ -76,8 +77,8 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
     
     
     date_help = "Las fechas no pueden ser domingos"
-    time1_help = "Las hora de inicio y conclusion no pueden ser menores o iguales que la hora actual si esta marcada la fecha actual"
-    time2_help = "La hora de conclusion no puede ser menor o igual que la hora de inicio"
+    time1_help = "Las hora de inicio y conclusión no pueden ser menores o iguales que la hora actual si está marcada la fecha actual"
+    time2_help = "La hora de conclusión no puede ser menor o igual que la hora de inicio"
     
 
     #=====|   CONFIGURACION POR TIPO DE FRECUENCIA   |=============================================================================================
@@ -91,7 +92,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
         date_input = [first_date]
 
     elif frecuency_type == "Rango de días":
-        range_input = col8.date_input("Rango de fechas", value=tuple_date_variable, min_value="today", help= "Se descartaran todas las fechas del intervalo que sean domingo")
+        range_input = col8.date_input("Rango de fechas", value=tuple_date_variable, min_value="today", help= "Se descartarán todas las fechas del intervalo que sean domingo")
         first_date = range_input[0]
         time_1 = col8.time_input("Hora de inicio", value= time_variable1, help=time1_help)
         time_2 = col8.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
@@ -182,7 +183,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
         date_invalidation = True
         clock = True   #====sdafsefasdfa
 #==========|   MUESTRA DE COLISIONES   |============================================================================================================
-    with col11.popover("Colisiones e Intervalos", width="stretch", help="La sugerencia del proximo intervalo disponible se hace teniendo"
+    with col11.popover("Colisiones e Intervalos", width="stretch", help="La sugerencia del próximo intervalo disponible se hace teniendo"
     " en cuenta los recursos, cada detalle del tipo de frecuencia y el horario incluidos, exceptuando la fecha inicial escogida"):
         if collitions_list:
             st.warning("Colisiones")

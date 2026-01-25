@@ -15,7 +15,8 @@ def edition_selector(index: int,edit=False,eliminate=False,):
                 dict_events[i] = dict_events[i].to_dict()        
             storage = [dict_dates,dict_events]
             save_json(storage,"data.json")
-            return
+            cambiar_pagina("inicio")
+            st.rerun()
         else:
             event = st.session_state.events[index]
             type = st.session_state.events[index].type
@@ -29,7 +30,7 @@ def edition_selector(index: int,edit=False,eliminate=False,):
             elif type == "Capacitación SWAT":
                 #cambiar_pagina("Capacitacion SWAT")
                 capacitacion_swat(True,event,index)
-            elif type == "Práctica de Tiro":
+            elif type == "Prácticas de Tiro":
                 #cambiar_pagina("Practica de Tiro")
                 practica_tiro(True,event,index)
             elif type == "Práctica de Conducción":
@@ -44,9 +45,6 @@ def edition_selector(index: int,edit=False,eliminate=False,):
             elif type == "Intervención a Domicilio":
                 #cambiar_pagina("Intervención a Domicilio")
                 intervencion_domicilio(True,event,index)
-            else:
-                #cambiar_pagina("Simulacros con Rehenes")
-                simulacro_rehenes(True,event,index)
            
 def week_days_decoding(list: list[int]):
     frecuency = ""
@@ -74,7 +72,8 @@ def week_days_decoding(list: list[int]):
 #===========|   PARA LOS RECURSOS   |=============================================================================================================
 
 def collition_search2(date,time,resources):
-    total_places = ["Academia Policial","Centro de entrenamiento","Pista de automovilismo"]
+    total_places = ["Academia Policial","Centro de entrenamiento","Pista de automovilismo","Salón de Artes Marciales",
+                    "Aula 1", "Aula 2", "Aula 3", "Salón de Reuniones", "Domicilio preparado", "Zona 1","Zona 2","Zona 3"]
     total_resources = deepcopy(resources)
     if st.session_state.dates:        
         
