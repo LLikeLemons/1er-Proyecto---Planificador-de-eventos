@@ -2,9 +2,10 @@ import os
 import sys
 import json
 import streamlit as st
-from .recursos_eventos import Event
+from .recursos_eventos import Event, date_event_dict
 from datetime import date, time
 from pathlib import Path
+from copy import deepcopy
 
 #========|  CARGA Y GUARDA DE DATOS   |============================================================================================================
 STORAGE_DIR_NAME = "data"
@@ -34,40 +35,37 @@ def load_json(filename: str = "data.json", encoding: str = "utf-8"):
     path = storage_path(filename)
     if not path.exists():
         # estructura por defecto esperada por la app; ajusta si tu app espera otra
-        default = [[], []]
+        default = [[], [],{},{}]
         save_json(default, filename, encoding=encoding)
         return default
     with open(path, "r", encoding=encoding) as fh:
         return json.load(fh)
 
 #=====|   ALMACEN DE RECURSOS   |========================================================================================================================
-def st_resources():
-        return {
-    "AMP": 50,
-    "Bicicletas": 20,
-    "Blancos de práctica": 30,
-    "Chalecos Antibalas":100,
-    "Conos": 20,
-    "Entrenadores de Defensa Personal":2,
-    "Entrenadores Físicos":3,
-    "Equipaje Táctico":20,
-    "Escopetas": 50,
-    "Helicóptero":2,
-    "Instructores": 30,
-    "Instructores de unidades especiales":6,
-    "Libro de capacitación para agentes I":50,
-    "Libro de capacitación para agentes II":50,
-    "Manuales de conducción para agentes": 50,
-    "Moto Mary-Policía": 20,
-    "Oficiales de alto rango": 7,
-    "Pistolas": 70,
-    "Proyectores": 5,
-    "Vehículo Z4": 30,
-    "Vehículo Interceptor": 5,
-    }
-def st_resources_edit(resources,amount,eliminate=False):
-    if not eliminate:
-        st.session_state[resources] = amount
+
+def st_resources_edit(resources,amount,delete=False):
+    if not delete:
+        st.session_state.resources[resources] = amount
+        st.session_state.custom_resources[resources] = amount
+    else:
+        del st.session_state.resources[resources]
+        del st.session_state.custom_resources[resources]
+    dict_dates = deepcopy(st.session_state.dates)
+    for i in range(len(dict_dates)):
+        dict_dates[i] = date_event_dict(dict_dates[i])
+    dict_events = deepcopy(st.session_state.events)
+    for i in range(len(dict_events)):
+        dict_events[i] = dict_events[i].to_dict()
+    
+    storage = [dict_dates,dict_events,st.session_state.resources,st.session_state.custom_resources]
+    save_json(storage,"data.json") 
+    
+def deletion_validation(resource):
+    for i in range(len(st.session_state.events)):
+        if resource in st.session_state.events[i].resources.keys():
+            return False
+    return True
+
 
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

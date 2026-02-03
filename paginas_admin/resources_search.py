@@ -18,7 +18,7 @@ def resources_search():
     time2 = col6.time_input("Hora de conclusion")
     if time2 > time1:
         time_input = (time1,time2)
-        resources = st_resources()
+        resources = st.session_state.resources
         
         total_resources, total_places = collition_search2(date_input,time_input,resources)
         st.markdown("""<div style='

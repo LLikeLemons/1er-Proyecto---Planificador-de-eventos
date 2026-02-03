@@ -3,7 +3,7 @@ from methods.recursos_eventos import Event
 from methods.recalibrate import recalibrate_dates_index
 from datetime import date, datetime, time, timedelta
 from copy import deepcopy
-#==========================|   CAMBIO DE VARIABLES GLOBALES PRINCIPALES   |========================================================================
+#==========================|   CAMBIO DE VARIABLES GLOBALES PRINCIPALES   |=============================================================================================
 
 def cambiar_pagina(nombre_pagina: str):
     st.session_state.pagina_actual = nombre_pagina
@@ -16,7 +16,7 @@ def agregar_fecha(fechas_evento: list[date]):
     smart_dates_sorter(0,len(st.session_state.dates)-1,st.session_state.dates)
 
 
-#======================|   ORDENADOR DE FECHAS   |=================================================================================================
+#======================|   ORDENADOR DE FECHAS   |======================================================================================================================
 
 def smart_dates_sorter(l:int,r:int,list:list[date]):
     if l>=r: return
@@ -60,10 +60,10 @@ def merge2(l:int,m:int,r:int,list:list[date]):
 
 
 
-#======================|   BUSQUEDA DE COLISIONES DE RECURSOS Y HORARIOS EN EVENTOS   |=======================================================
+#======================|   BUSQUEDA DE COLISIONES DE RECURSOS Y HORARIOS EN EVENTOS   |=================================================================================
 
 
-#------------------|   BUSQUEDA DE COINCIDENCIAS DE FECHAS EN EVENTOS   |-----------------------------------------------------------
+#------------------|   BUSQUEDA DE COINCIDENCIAS DE FECHAS EN EVENTOS   |-----------------------------------------------------------------------------------------------
 
 def binary_search(left: int, right: int, list: list[tuple[date,int]], element: date):
     indexes = [0,0]
@@ -104,7 +104,7 @@ def binary_search_last(left: int, right: int, list: list[tuple[date,int]], eleme
     else:
         return binary_search_last(left,middle,list,element)
 
-#-----------|   FUNCIONES AUXILIARES DE COLLITION_SEARCH   |------------------------------------------------------------------------------------
+#-----------|   FUNCIONES AUXILIARES DE COLLITION_SEARCH   |------------------------------------------------------------------------------------------------------------
 
 def hours_collition(second_event_time: tuple[time], main_event_time: tuple[time]):
     se = second_event_time
@@ -125,7 +125,7 @@ def resource_collition(total_resources: dict[int], event_resources: dict[int]):
             collition = True   
     return collition
 
-#-----------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def collition_search(event,resources,looking_gap=False,date_gap=None,editor=False,editable_event=None,index=None):
     if editor:
         program_predates = deepcopy(st.session_state.dates)
@@ -184,8 +184,8 @@ def decoding_collitions(collitions, event):
 
 
 
-#==============|   BUSQUEDA DE PROXIMO INTERVAlO DISPONIBLE   |===================================================================================
-#-------------|   FUNCIONES AUXILIARES DE NEXT_GAP   |--------------------------------------------------------------------------------------------
+#==============|   BUSQUEDA DE PROXIMO INTERVAlO DISPONIBLE   |=========================================================================================================
+#----------------|   FUNCIONES AUXILIARES DE NEXT_GAP   |---------------------------------------------------------------------------------------------------------------
 def weekdays_search(event):
     weekdays = []
     for x in event.dates:
@@ -216,10 +216,10 @@ def range_addition(range_input):
         tuple_1 += timedelta(days=1)
     return date_input
 
-#----------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def next_gap(event,resources,editor=False,index=None):
-    #--|  inicializo la variable firstdate   |--------------------------------------------------------------------------------------------
+#-------|  inicializo la variable firstdate   |--------------------------------------------------------------------------------------------------------------------------
     datetime0 = datetime.now()
     datetime1 = date(datetime0.year,datetime0.month,datetime0.day)
     timed = time(datetime0.hour,datetime0.minute)
@@ -240,7 +240,7 @@ def next_gap(event,resources,editor=False,index=None):
     else:
         first_date = datetime1 + timedelta(days=1)       
         
-#---------|   encuentra el tipo de requisito y la lista de fechas   |------------------------------------------------------------------------------
+#---------|   encuentra el tipo de requisito y la lista de fechas   |---------------------------------------------------------------------------------------------------
     while True: 
         date_input = []
 
@@ -268,14 +268,14 @@ def next_gap(event,resources,editor=False,index=None):
             
         else:
             date_input = [first_date]
-#-------------|   busca la colision   |-----------------------------------------------------------------------------------------------------------
+#-------------|   busca la colision   |---------------------------------------------------------------------------------------------------------------------------------
         if not collition_search(event,resources,True,date_input,editor=editor,index=index):
             if first_date == datetime1:
                 if event.time[0] > timed and event.time[1] > timed:
                     return first_date
             else:
                 return first_date   
-#-------------|   En caso negativo suma valores a la fecha   |------------------------------------------------------------------------------------
+#-------------|   En caso negativo suma valores a la fecha   |----------------------------------------------------------------------------------------------------------
         if event.frecuency_type == "Frecuencia mensual":
             first_date = date(first_date.year,first_date.month+1,first_date.day)
 
@@ -289,5 +289,5 @@ def next_gap(event,resources,editor=False,index=None):
                 first_date+=timedelta(days=2)            
         
 
-#/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

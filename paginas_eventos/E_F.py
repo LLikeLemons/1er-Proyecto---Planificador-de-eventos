@@ -167,7 +167,7 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
     new_event = Event(date_input,(time_1,time_2),"Entrenamiento Físico",dict,place,frecuency_type,frecuency,attempts)
     
 #==========|   BUSQUEDA DE COLISIONES E INVALIDACION DEL EVENTO   |===============================================================================
-    resources = st_resources()
+    resources = st.session_state.resources
     collitions_list = collition_search(new_event,resources,editor=editor,index=index,editable_event=editable_event)
     if collitions_list:
        date_invalidation = True

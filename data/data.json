@@ -5,6 +5,18 @@
       1,
       29,
       0
+    ],
+    [
+      2026,
+      2,
+      3,
+      1
+    ],
+    [
+      2026,
+      2,
+      6,
+      2
     ]
   ],
   [
@@ -42,6 +54,109 @@
         0,
         0
       ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          3
+        ]
+      ],
+      "time": [
+        16,
+        0,
+        18,
+        15
+      ],
+      "type": "Práctica de Conducción",
+      "resources": {
+        "Conos": 0,
+        "Instructores": 0,
+        "Moto Mary-Policía": 0,
+        "Vehículo Interceptor": 0,
+        "Vehículo Z4": 0,
+        "balas balas": 2,
+        "bella vida": 6
+      },
+      "place": "Pista de automovilismo",
+      "frecuency type": "Evento único",
+      "frecuency": 0,
+      "week days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          6
+        ]
+      ],
+      "time": [
+        14,
+        21,
+        16,
+        0
+      ],
+      "type": "Práctica de Conducción",
+      "resources": {
+        "Conos": 0,
+        "Instructores": 0,
+        "Moto Mary-Policía": 0,
+        "Vehículo Interceptor": 0,
+        "Vehículo Z4": 1,
+        "balas balas": 2,
+        "bella vida": 6
+      },
+      "place": "Centro de entrenamiento",
+      "frecuency type": "Evento único",
+      "frecuency": 0,
+      "week days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     }
-  ]
+  ],
+  {
+    "AMP": 50,
+    "Bicicletas": 20,
+    "Blancos de práctica": 30,
+    "Chalecos Antibalas": 100,
+    "Conos": 20,
+    "Entrenadores de Defensa Personal": 2,
+    "Entrenadores Físicos": 3,
+    "Equipaje Táctico": 20,
+    "Escopetas": 50,
+    "Helicóptero": 2,
+    "Instructores": 30,
+    "Instructores de unidades especiales": 6,
+    "Libro de capacitación para agentes I": 50,
+    "Libro de capacitación para agentes II": 50,
+    "Manuales de conducción para agentes": 50,
+    "Moto Mary-Policía": 20,
+    "Oficiales de alto rango": 7,
+    "Pistolas": 70,
+    "Proyectores": 5,
+    "Vehículo Z4": 30,
+    "Vehículo Interceptor": 5,
+    "balas balas": 2,
+    "bella vida": 6
+  },
+  {
+    "balas balas": 2,
+    "bella vida": 6
+  }
 ]

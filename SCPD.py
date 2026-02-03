@@ -3,7 +3,8 @@ from pathlib import Path
 from PIL import Image
 from paginas_eventos import *
 from methods import *
-from paginas_admin import edicion, resources_search, edition_selector, visualizador_eventos
+from paginas_admin import edicion, resources_search, edition_selector, visualizador_eventos, custom_resources
+
 
 def main():
 #========|   CARGA DE DATOS INICIAL   |============================================================================================================
@@ -14,15 +15,19 @@ def main():
         st.session_state.pagina_actual = "inicio"
     if "dates" not in st.session_state:
         st.session_state.dates = storage[0]
-    if "eventos" not in st.session_state:
+    if "events" not in st.session_state:
         st.session_state.events = dict_event(storage[1])
+    if "resources" not in st.session_state:
+        st.session_state.resources = storage[2]
+    if "custom_resources" not in st.session_state:
+        st.session_state.custom_resources = storage[3]
     
 
 #===============|   PAGINA PRINCIPAL   |=========================================================================================================
     st.set_page_config(layout="wide",page_title="AGENDA",page_icon="📑")
 
     if st.session_state.pagina_actual == "inicio":
-        tab1,tab2,tab3,tab4 = st.tabs(["INICIO", "RECURSOS", "EDICIÓN","VISUALIZACIÓN"])
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["INICIO", "RECURSOS", "EDICIÓN","VISUALIZACIÓN","RECURSOS PERSONALIZADOS"])
         with tab1:
             st.markdown("""<div style='
                 border: 4px solid red;
@@ -41,6 +46,8 @@ def main():
             edicion()
         with tab4:
             visualizador_eventos()
+        with tab5:
+            custom_resources()
                 
 
 
