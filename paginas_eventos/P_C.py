@@ -225,6 +225,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
 #============|   BOTONES DE ACCION   |==============================================================================================================
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")
+        st.rerun()
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
         if editor:
             del st.session_state.events[index]
@@ -241,3 +242,4 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
         storage = [dict_dates,dict_events,st.session_state.resources,st.session_state.custom_resources]
         save_json(storage,"data.json") 
         cambiar_pagina("inicio")    
+        st.rerun()

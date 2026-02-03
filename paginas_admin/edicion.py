@@ -49,20 +49,27 @@ def edicion():
                 text-align: center;
                 '>SELECCIONE UN EVENTO
                 </div>""",unsafe_allow_html=True)
-        elif st.session_state.events[options.index(selection)].date[0] <= actual_date:
+        elif st.session_state.events[options.index(selection)].date[0] <= actual_date and st.session_state.events[options.index(selection)].date[-1] >= actual_date:
             st.markdown("""<div style='
                 font-size: 40px;
                 text-align: center;
-                '>🚫 NO PUEDE EDITAR UN EVENTO EN TRANSCURSO  
+                '>🚫 NO PUEDE EDITAR NI ELIMINAR UN EVENTO EN TRANSCURSO  
                 </div>""",unsafe_allow_html=True)
+        elif st.session_state.events[options.index(selection)].date[0] <= actual_date:
+            if st.button(label="Eliminar",width="stretch",help="Los eventos que han finalizado pueden ser eliminados"):
+                st.session_state.edition_values = (index,False,True)
+                cambiar_pagina("edicion")
+                st.rerun()
         else:
             col1,col2 = st.columns(2)    
             index = options.index(selection)
             if col1.button(label="Editar",type="primary",width="stretch"):
                 st.session_state.edition_values = (index,True,False)
                 cambiar_pagina("edicion")
+                st.rerun()
             if col2.button(label="Eliminar",width="stretch"):
                 st.session_state.edition_values = (index,False,True)
                 cambiar_pagina("edicion")
+                st.rerun()
 
 
