@@ -225,7 +225,7 @@ def next_gap(event,resources,editor=False,index=None):
     timed = time(datetime0.hour,datetime0.minute)
     if event.frecuency_type == "Frecuencia mensual":
         first_date = event.date[0]
-        datetime2 = date(datetime1.year,datetime2.month+1,datetime1.day)
+        datetime2 = date(datetime1.year,datetime1.month+1,datetime1.day)
         while datetime2 < first_date:
                 first_date = date(first_date.year,first_date.month-1,first_date.day)  
     elif event.frecuency_type == "Frecuencia semanal":
@@ -233,7 +233,6 @@ def next_gap(event,resources,editor=False,index=None):
         first_date = event.date[0]
         datetime3 = datetime1 + timedelta(days=7)
         while datetime3 <= first_date:
-                st.write(f"AQUI ESTA {first_date}")
                 first_date -= timedelta(days=7)
     elif datetime1.weekday() != 6:
         first_date = datetime1  
@@ -244,7 +243,8 @@ def next_gap(event,resources,editor=False,index=None):
     while True: 
         date_input = []
 
-        if event.frecuency_type == "Frecuencia mensual":                         
+        if event.frecuency_type == "Frecuencia mensual": 
+            date_input = [first_date]                  
             next_date = first_date
             for i in range(event.frecuency):
                 next_date = date(next_date.year,next_date.month+1,next_date.day)
@@ -252,7 +252,8 @@ def next_gap(event,resources,editor=False,index=None):
 
         elif event.frecuency_type == "Rango de días":
             difference = event.date[-1] - event.date[0]
-            tuple_1 = (first_date,first_date+timedelta(difference))
+            st.write(difference)
+            tuple_1 = (first_date,first_date+difference)
             date_input = range_addition(tuple_1)
 
         elif event.frecuency_type == "Frecuencia semanal":            

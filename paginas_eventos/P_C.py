@@ -11,7 +11,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
     col4, col11, col5  = st.columns([0.51,0.34,0.15], vertical_alignment="center")
     col12, col8 = st.columns(2,border=True)
     tab1, tab2 = col12.tabs(["Recursos predeterminados","Recursos personalizados"])
-    tab3, = col8.tabs(["Fecha y Hora"])
+    tab3, = col8.tabs(["Fecha y Hora"]) 
     col6, col7 = tab1.columns(2)
     date_invalidation = False
     actual_datetime = datetime.now()
@@ -38,11 +38,11 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
         frecuency_variable = editable_event.frecuency
         first_date_variable = editable_event.date[0]
         tuple_date_variable = editable_event.date[0]
-        defaultcr = []
+        defaultcr = [] 
         custom_keys = st.session_state.custom_resources.keys()
         for k in editable_event.resources.keys():
             if k in custom_keys:
-                defaultcr.append(k)
+                defaultcr.append(k)  
 
     else:
         index_variable = 0
@@ -81,7 +81,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
         place = st.selectbox("Lugar de práctica", places_options,
                      help="Por cuestiones de seguridad los vehículos Interceptor solo tienen permitido manejarse  \n"
                      "en la pista de automovilismo",index=place_variable)
-    with tab2:
+    with tab2: 
         custom_resources = st.multiselect("I THINK IT IS OK", list(st.session_state.custom_resources.keys()),label_visibility="collapsed",default=defaultcr)
         custom_dict = {}
         for i in range(len(custom_resources)):
@@ -225,7 +225,7 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
 #============|   BOTONES DE ACCION   |==============================================================================================================
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")
-        st.rerun()
+        st.rerun() ############
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
         if editor:
             del st.session_state.events[index]
@@ -238,8 +238,8 @@ def practica_conduccion(editor=False,editable_event=None, index=None):
         dict_events = deepcopy(st.session_state.events)
         for i in range(len(dict_events)):
             dict_events[i] = dict_events[i].to_dict()
-        
+         #####3333
         storage = [dict_dates,dict_events,st.session_state.resources,st.session_state.custom_resources]
         save_json(storage,"data.json") 
         cambiar_pagina("inicio")    
-        st.rerun()
+        st.rerun() ##############

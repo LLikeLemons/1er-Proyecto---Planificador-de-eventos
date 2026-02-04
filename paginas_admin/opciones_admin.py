@@ -13,7 +13,7 @@ def edition_selector(index: int,edit=False,eliminate=False,):
             dict_events = deepcopy(st.session_state.events)
             for i in range(len(dict_events)):
                 dict_events[i] = dict_events[i].to_dict()        
-            storage = [dict_dates,dict_events]
+            storage = [dict_dates,dict_events, st.session_state.resources, st.session_state.custom_resources]
             save_json(storage,"data.json")
             cambiar_pagina("inicio")
             st.rerun()
@@ -78,7 +78,6 @@ def collition_search2(date,time,resources):
     if st.session_state.dates:        
         
         values_list = binary_search(0,len(st.session_state.dates)-1,st.session_state.dates, date)
-        st.write(values_list)
         if values_list:   
             for j in range(len(values_list)):  
                 if hours_collition(st.session_state.events[values_list[j]].time, time):

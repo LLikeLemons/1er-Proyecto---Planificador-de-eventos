@@ -35,7 +35,29 @@ def load_json(filename: str = "data.json", encoding: str = "utf-8"):
     path = storage_path(filename)
     if not path.exists():
         # estructura por defecto esperada por la app; ajusta si tu app espera otra
-        default = [[], [],{},{}]
+        default = [[], [],{
+    "AMP": 50,
+    "Bicicletas": 20,
+    "Blancos de práctica": 30,
+    "Chalecos Antibalas":100,
+    "Conos": 20,
+    "Entrenadores de Defensa Personal":2,
+    "Entrenadores Físicos":3,
+    "Equipaje Táctico":20,
+    "Escopetas": 50,
+    "Helicóptero":2,
+    "Instructores": 30,
+    "Instructores de unidades especiales":6,
+    "Libro de capacitación para agentes I":50,
+    "Libro de capacitación para agentes II":50,
+    "Manuales de conducción para agentes": 50,
+    "Moto Mary-Policía": 20,
+    "Oficiales de alto rango": 7,
+    "Pistolas": 70,
+    "Proyectores": 5,
+    "Vehículo Z4": 30,
+    "Vehículo Interceptor": 5
+    },{}]
         save_json(default, filename, encoding=encoding)
         return default
     with open(path, "r", encoding=encoding) as fh:

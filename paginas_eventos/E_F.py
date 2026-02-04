@@ -1,14 +1,15 @@
 import streamlit as st
 from methods import *
 from datetime import datetime, date, time, timedelta
-#PENDIENTE AJUSTAR LOS RECURSOS
+
 def entrenamiento_fisico(editor=False,editable_event=None, index=None):
     col0, col1 = st.columns([0.85,0.15], vertical_alignment="center")
     col2, col3 = st.columns([0.85,0.15], vertical_alignment="center")
     col4, col11, col5  = st.columns([0.51,0.34,0.15], vertical_alignment="center")
     col7, = st.columns(1)
-    col6, col8 = st.columns([0.5,0.5],border=True)   
- 
+    col6, col8 = st.columns(2,border=True)   
+    tab1, tab2 = col6.tabs(["Recursos predeterminados","Recursos personalizados"])
+    tab3, = col8.tabs(["Fecha y Hora"])
     date_invalidation = False
     actual_datetime = datetime.now()
     actual_date = date(actual_datetime.year,actual_datetime.month,actual_datetime.day)
@@ -34,20 +35,28 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
         tuple_date_variable = editable_event.date[0]
         if ef_variable > 0:
             default = "Físico"
+            ed_variable = 1
         else:
             default = "Defensa Personal"
+            ef_variable = 1
+        defaultcr = []
+        custom_keys = st.session_state.custom_resources.keys()
+        for k in editable_event.resources.keys():
+            if k in custom_keys:
+                defaultcr.append(k)
     else:
         index_variable = 0
-        ef_variable = 0
-        ed_variable = 0
+        ef_variable = 1
+        ed_variable = 1
         bic_variable = 0
-        place_variable = 0
+        place_variable = "Centro de entrenamiento"
         time_variable1 = "now"
         time_variable2 = "now"
         frecuency_variable = 0
         first_date_variable = "today"
         tuple_date_variable = ["today","today"]
         default = "Físico"
+        defaultcr = None
 
     #============|  TIPO DE FRECUENCIAS   |========================================================================================================
     with col4:
@@ -57,21 +66,31 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
     
     #============|   CONFIGURACION DE RECURSOS   |==================================================================================================    
     training = col7.select_slider("Tipo de Entrenamiento",options=["Físico","Defensa Personal"],width="stretch",label_visibility= "collapsed",value=default)   
-    with col6: 
+    with tab1: 
         if training == "Físico":
-            ef = st.number_input("Cantidad de entrenadores físicos",value=ef_variable, min_value=0, max_value=3)
+            ef = st.number_input("Cantidad de entrenadores físicos",value=ef_variable, min_value=1, max_value=3)
             ed = 0
             places_options1 = places_options[1:]
-            place_variable = places_options1.index(place_variable)
+            if place_variable != "Salón de Artes Marciales":
+                place_index = places_options1.index(place_variable)
+            else:
+                place_index = 0
         else: 
-            ed = st.number_input("Cantidad de entrenadores de Defensa Personal", value=ed_variable, min_value=0,max_value=2)
+            ed = st.number_input("Cantidad de entrenadores de Defensa Personal", value=ed_variable, min_value=1,max_value=2)
             ef = 0
             places_options1 = places_options[0]
-            place_variable = 0
+            place_index = 0
         bic = st.number_input("Cantidad de bicicletas", value=bic_variable, min_value=0, max_value=20)
             
-        place = st.selectbox("Lugar de entrenamiento", places_options1,index=place_variable)
-        
+        place = st.selectbox("Lugar de entrenamiento", places_options1,index=place_index)
+    with tab2:  
+        custom_resources = st.multiselect("I THINK IT IS OK", list(st.session_state.custom_resources.keys()),label_visibility="collapsed",default=defaultcr)
+        custom_dict = {}
+        for i in range(len(custom_resources)):
+            custom_dict[custom_resources[i]] = st.number_input(f"Cantidad de {custom_resources[i]}",step=1,min_value=0,
+                                                               max_value=st.session_state.custom_resources[custom_resources[i]],
+                                                               value=editable_event.resources[custom_resources[i]] if defaultcr else 0)
+
 
     #======|   AYUDA A RESTRICCIONES   |===========================================================================================================
     
@@ -86,13 +105,13 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
     validations = [0,0,0,0,0,0,0]
     attempts = [0,0,0,0,0,0,0]
     if frecuency_type == "Evento único":
-        first_date = col8.date_input("Fecha", value=first_date_variable , min_value="today", help = date_help)
-        time_1 = col8.time_input("Hora de inicio", value= time_variable1, help=time1_help)
-        time_2 = col8.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
+        first_date = tab3.date_input("Fecha", value=first_date_variable , min_value="today", help = date_help)
+        time_1 = tab3.time_input("Hora de inicio", value= time_variable1, help=time1_help)
+        time_2 = tab3.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
         date_input = [first_date]
 
     elif frecuency_type == "Rango de días":
-        range_input = col8.date_input("Rango de fechas", value=tuple_date_variable, min_value="today", help= "Se descartarán todas las fechas del intervalo que sean domingo")
+        range_input = tab3.date_input("Rango de fechas", value=tuple_date_variable, min_value="today", help= "Se descartarán todas las fechas del intervalo que sean domingo")
         first_date = range_input[0]
         time_1 = col8.time_input("Hora de inicio", value= time_variable1, help=time1_help)
         time_2 = col8.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
@@ -104,7 +123,7 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
         
 
     elif frecuency_type == "Frecuencia semanal":
-        col9, col10 = col8.columns([0.3,0.7])
+        col9, col10 = tab3.columns([0.3,0.7])
         prechecks = [0,0,0,0,0,0,0]
         
         first_date = col10.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
@@ -143,10 +162,10 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
         
 
     elif frecuency_type == "Frecuencia mensual":            
-        first_date = col8.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
+        first_date = tab3.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
         
-        time_1 = col8.time_input("Hora de inicio",value= time_variable1, help=time1_help)
-        time_2 = col8.time_input("Hora de conclusión",value= time_variable2, help=time2_help)        
+        time_1 = tab3.time_input("Hora de inicio",value= time_variable1, help=time1_help)
+        time_2 = tab3.time_input("Hora de conclusión",value= time_variable2, help=time2_help)        
         frecuency = col5.slider("Cantidad de meses",value=frecuency_variable,max_value=12)
         date_input = [first_date]
         next_date = first_date
@@ -164,6 +183,7 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
         "Entrenadores de Defensa Personal": ed,
         "Entrenadores Físicos": ef        
     }
+    dict.update(custom_dict)
     new_event = Event(date_input,(time_1,time_2),"Entrenamiento Físico",dict,place,frecuency_type,frecuency,attempts)
     
 #==========|   BUSQUEDA DE COLISIONES E INVALIDACION DEL EVENTO   |===============================================================================
@@ -179,7 +199,7 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
 
     if first_date.weekday() == 6:
         date_invalidation = True
-        clock = True   #====sdafsefasdfa
+        clock = True  
 #==========|   MUESTRA DE COLISIONES   |============================================================================================================
     with col11.popover("Colisiones e Intervalos", width="stretch", help="La sugerencia del próximo intervalo disponible se hace teniendo"
     " en cuenta los recursos, cada detalle del tipo de frecuencia y el horario incluidos, exceptuando la fecha inicial escogida"):
@@ -204,6 +224,7 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
 #============|   BOTONES DE ACCION   |==============================================================================================================
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")
+        st.rerun()
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
         if editor:
             del st.session_state.events[index]
@@ -217,6 +238,7 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
         for i in range(len(dict_events)):
             dict_events[i] = dict_events[i].to_dict()
         
-        storage = [dict_dates,dict_events]
+        storage = [dict_dates,dict_events,st.session_state.resources,st.session_state.custom_resources]
         save_json(storage,"data.json") 
-        cambiar_pagina("inicio")    
+        cambiar_pagina("inicio")   
+        st.rerun() 

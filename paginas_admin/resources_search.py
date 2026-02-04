@@ -15,7 +15,7 @@ def resources_search():
     col4,col5,col6 = st.columns(3)
     date_input = col4.date_input("Fecha")
     time1 = col5.time_input("Hora de inicio")
-    time2 = col6.time_input("Hora de conclusion")
+    time2 = col6.time_input("Hora de conclusión")
     if time2 > time1:
         time_input = (time1,time2)
         resources = st.session_state.resources
@@ -33,14 +33,14 @@ def resources_search():
         col1,col2,col3 = st.columns(3,border=True)
         i=0
         for k,v in total_resources.items():
-            if i < 6:
+            if i <= len(total_resources)//3:
                 col1.markdown(f"""<div style='
                     border-bottom: 1px dashed darkblue;
                     text-size: 10px;
                     text-align: center;
                     '>{k}: {v}
                     </div>""",unsafe_allow_html=True)
-            elif i < 13:
+            elif i > len(total_resources)//3 and i <= 2*len(total_resources)//3:
                 col2.markdown(f"""<div style='
                     border-bottom: 1px dashed darkblue;
                     text-size: 10px;
@@ -73,4 +73,4 @@ def resources_search():
                 '>{v}
                 </div>""",unsafe_allow_html=True)
     else: 
-        st.header("La hora de conclusion debe ser mayor que la hora de inicio")
+        st.header("La hora de conclusión debe ser mayor que la hora de inicio")

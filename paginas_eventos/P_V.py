@@ -6,7 +6,10 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
     col0, col1 = st.columns([0.85,0.15], vertical_alignment="center")
     col2, col3 = st.columns([0.85,0.15], vertical_alignment="center")
     col4, col11, col5  = st.columns([0.51,0.34,0.15], vertical_alignment="center")
-    col6, col7, col8 = st.columns([0.25,0.25,0.5],border=True)
+    col12, col8 = st.columns(2,border=True)
+    tab1, tab2 = col12.tabs(["Recursos predeterminados","Recursos personalizados"])
+    tab3, = col8.tabs(["Fecha y Hora"])
+    col6, col7= tab1.columns(2)
     date_invalidation = False
     actual_datetime = datetime.now()
     actual_date = date(actual_datetime.year,actual_datetime.month,actual_datetime.day)
@@ -17,7 +20,7 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
     col2.subheader("Simulacros: Persecución y aprehención vehicular", divider="red")
 
 #=========| VARIABLES DE EDITOR PARA CONFIGURACION PREDETERMINADA   |=============================================================================
-    frecuency_options = ["Evento único", "Frecuencia semanal", "Frecuencia mensual", "Rango de días"]
+    frecuency_options = ["Evento único", "Frecuencia semanal", "Frecuencia mensual"]
     places_options = ["Zona 1", "Zona 2","Zona 3"]
     if editor:
         
@@ -33,6 +36,11 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
         time_variable2 = editable_event.time[1]
         frecuency_variable = editable_event.frecuency
         first_date_variable = editable_event.date[0]
+        defaultcr = []  
+        custom_keys = st.session_state.custom_resources.keys()
+        for k in editable_event.resources.keys():
+            if k in custom_keys:
+                defaultcr.append(k)
     else:
         index_variable = 0
         z4_variable = 0
@@ -46,6 +54,7 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
         time_variable2 = "now"
         frecuency_variable = 0
         first_date_variable = "today"
+        defaultcr = None
 
 
     #============|  TIPO DE FRECUENCIAS   |========================================================================================================
@@ -64,7 +73,15 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
         inst = st.number_input("Cantidad de instructores", value=inst_variable, min_value=0, max_value= 30)
         heli = st.number_input("Cantidad de helicópteros", value=heli_variable, min_value=0, max_value=2)
     place = st.selectbox("Lugar de simulacro", places_options,index=place_variable)
-        
+    with tab2:
+        custom_resources = st.multiselect("I THINK IT IS OK", list(st.session_state.custom_resources.keys()),label_visibility="collapsed",default=defaultcr)
+        custom_dict = {}
+        for i in range(len(custom_resources)):
+            custom_dict[custom_resources[i]] = st.number_input(f"Cantidad de {custom_resources[i]}",step=1,min_value=0,
+                                                               max_value=st.session_state.custom_resources[custom_resources[i]],
+                                                               value=editable_event.resources[custom_resources[i]] if defaultcr else 0)
+
+         
 
     #======|   AYUDA A RESTRICCIONES   |===========================================================================================================
     
@@ -79,13 +96,13 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
     validations = [0,0,0,0,0,0,0]
     attempts = [0,0,0,0,0,0,0]
     if frecuency_type == "Evento único":
-        first_date = col8.date_input("Fecha", value=first_date_variable , min_value="today", help = date_help)
-        time_1 = col8.time_input("Hora de inicio", value= time_variable1, help=time1_help)
-        time_2 = col8.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
+        first_date = tab3.date_input("Fecha", value=first_date_variable , min_value="today", help = date_help)
+        time_1 = tab3.time_input("Hora de inicio", value= time_variable1, help=time1_help)
+        time_2 = tab3.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
         date_input = [first_date]
 
     elif frecuency_type == "Frecuencia semanal":
-        col9, col10 = col8.columns([0.3,0.7])
+        col9, col10 = tab3.columns([0.3,0.7])
         prechecks = [0,0,0,0,0,0,0]
         
         first_date = col10.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
@@ -124,10 +141,10 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
         
 
     elif frecuency_type == "Frecuencia mensual":            
-        first_date = col8.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
+        first_date = tab3.date_input("Fecha inicial", value=first_date_variable, min_value="today", help=date_help)
         
-        time_1 = col8.time_input("Hora de inicio",value= time_variable1, help=time1_help)
-        time_2 = col8.time_input("Hora de conclusión",value= time_variable2, help=time2_help)        
+        time_1 = tab3.time_input("Hora de inicio",value= time_variable1, help=time1_help)
+        time_2 = tab3.time_input("Hora de conclusión",value= time_variable2, help=time2_help)        
         frecuency = col5.slider("Cantidad de meses",value=frecuency_variable,max_value=12)
         date_input = [first_date]
         next_date = first_date
@@ -148,6 +165,7 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
         "Vehículo Z4": z4,
         "Helicóptero": heli,
     }
+    dict.update(custom_dict)
     new_event = Event(date_input,(time_1,time_2),"Persecusión y aprehensión vehicular",dict,place,frecuency_type,frecuency,attempts)
     
 #==========|   BUSQUEDA DE COLISIONES E INVALIDACION DEL EVENTO   |===============================================================================
@@ -163,7 +181,7 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
 
     if first_date.weekday() == 6:
         date_invalidation = True
-        clock = True   #====sdafsefasdfa
+        clock = True
 #==========|   MUESTRA DE COLISIONES   |============================================================================================================
     with col11.popover("Colisiones e Intervalos", width="stretch", help="La sugerencia del próximo intervalo disponible se hace teniendo"
     " en cuenta los recursos, cada detalle del tipo de frecuencia y el horario incluidos, exceptuando la fecha inicial escogida"):
@@ -188,6 +206,7 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
 #============|   BOTONES DE ACCION   |==============================================================================================================
     if col1.button("Cancelar",use_container_width=True):
         cambiar_pagina("inicio")
+        st.rerun()
     if col3.button("Confirmar",use_container_width=True, type="primary", disabled= date_invalidation):
         if editor:
             del st.session_state.events[index]
@@ -201,6 +220,7 @@ def persecusion_vehiculo(editor=False,editable_event=None, index=None):
         for i in range(len(dict_events)):
             dict_events[i] = dict_events[i].to_dict()
         
-        storage = [dict_dates,dict_events]
+        storage = [dict_dates,dict_events,st.session_state.resources,st.session_state.custom_resources]
         save_json(storage,"data.json") 
         cambiar_pagina("inicio")    
+        st.rerun()

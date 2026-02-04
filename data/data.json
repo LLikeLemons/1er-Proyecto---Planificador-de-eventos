@@ -2,20 +2,188 @@
   [
     [
       2026,
-      1,
-      29,
-      0
+      2,
+      4,
+      1
     ],
     [
       2026,
       2,
-      3,
+      4,
+      6
+    ],
+    [
+      2026,
+      2,
+      5,
+      2
+    ],
+    [
+      2026,
+      2,
+      5,
       1
     ],
     [
       2026,
       2,
       6,
+      0
+    ],
+    [
+      2026,
+      2,
+      6,
+      1
+    ],
+    [
+      2026,
+      2,
+      10,
+      3
+    ],
+    [
+      2026,
+      2,
+      11,
+      1
+    ],
+    [
+      2026,
+      2,
+      11,
+      3
+    ],
+    [
+      2026,
+      2,
+      12,
+      1
+    ],
+    [
+      2026,
+      2,
+      12,
+      3
+    ],
+    [
+      2026,
+      2,
+      13,
+      1
+    ],
+    [
+      2026,
+      2,
+      13,
+      3
+    ],
+    [
+      2026,
+      2,
+      14,
+      3
+    ],
+    [
+      2026,
+      2,
+      16,
+      3
+    ],
+    [
+      2026,
+      2,
+      17,
+      7
+    ],
+    [
+      2026,
+      2,
+      18,
+      1
+    ],
+    [
+      2026,
+      2,
+      19,
+      8
+    ],
+    [
+      2026,
+      2,
+      19,
+      1
+    ],
+    [
+      2026,
+      2,
+      20,
+      8
+    ],
+    [
+      2026,
+      2,
+      20,
+      1
+    ],
+    [
+      2026,
+      2,
+      21,
+      8
+    ],
+    [
+      2026,
+      2,
+      23,
+      8
+    ],
+    [
+      2026,
+      2,
+      24,
+      8
+    ],
+    [
+      2026,
+      2,
+      24,
+      5
+    ],
+    [
+      2026,
+      2,
+      25,
+      8
+    ],
+    [
+      2026,
+      2,
+      26,
+      8
+    ],
+    [
+      2026,
+      2,
+      27,
+      8
+    ],
+    [
+      2026,
+      2,
+      28,
+      4
+    ],
+    [
+      2026,
+      3,
+      5,
+      2
+    ],
+    [
+      2026,
+      4,
+      5,
       2
     ]
   ],
@@ -24,22 +192,22 @@
       "date": [
         [
           2026,
-          1,
-          29
+          2,
+          6
         ]
       ],
       "time": [
-        21,
-        30,
-        23,
-        30
+        15,
+        19,
+        16,
+        45
       ],
       "type": "Práctica de Conducción",
       "resources": {
         "Conos": 0,
-        "Instructores": 3,
+        "Instructores": 0,
         "Moto Mary-Policía": 0,
-        "Vehículo Interceptor": 3,
+        "Vehículo Interceptor": 0,
         "Vehículo Z4": 0
       },
       "place": "Pista de automovilismo",
@@ -60,26 +228,204 @@
         [
           2026,
           2,
-          3
+          4
+        ],
+        [
+          2026,
+          2,
+          5
+        ],
+        [
+          2026,
+          2,
+          6
+        ],
+        [
+          2026,
+          2,
+          11
+        ],
+        [
+          2026,
+          2,
+          12
+        ],
+        [
+          2026,
+          2,
+          13
+        ],
+        [
+          2026,
+          2,
+          18
+        ],
+        [
+          2026,
+          2,
+          19
+        ],
+        [
+          2026,
+          2,
+          20
+        ]
+      ],
+      "time": [
+        18,
+        24,
+        20,
+        0
+      ],
+      "type": "Capacitación de Instructores",
+      "resources": {
+        "Instructores": 3,
+        "Libro de capacitación para agentes II": 16,
+        "Proyectores": 3,
+        "balas": 1
+      },
+      "place": "Aula 1",
+      "frecuency type": "Frecuencia semanal",
+      "frecuency": 2,
+      "week days": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          5
+        ],
+        [
+          2026,
+          3,
+          5
+        ],
+        [
+          2026,
+          4,
+          5
+        ]
+      ],
+      "time": [
+        0,
+        15,
+        18,
+        41
+      ],
+      "type": "Capacitación SWAT",
+      "resources": {
+        "Instructores": 4,
+        "Libro de capacitación para agentes I": 8,
+        "Libro de capacitación para agentes II": 10,
+        "Oficiales de alto rango": 1,
+        "Proyectores": 2,
+        "mi nueba bida": 3,
+        "balas": 2
+      },
+      "place": "Salón de Reuniones",
+      "frecuency type": "Frecuencia mensual",
+      "frecuency": 2,
+      "week days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          10
+        ],
+        [
+          2026,
+          2,
+          11
+        ],
+        [
+          2026,
+          2,
+          12
+        ],
+        [
+          2026,
+          2,
+          13
+        ],
+        [
+          2026,
+          2,
+          14
+        ],
+        [
+          2026,
+          2,
+          16
+        ]
+      ],
+      "time": [
+        0,
+        15,
+        1,
+        0
+      ],
+      "type": "Prácticas de Tiro",
+      "resources": {
+        "AMP": 0,
+        "Blancos de práctica": 20,
+        "Escopetas": 4,
+        "Instructores": 7,
+        "Pistolas": 20
+      },
+      "place": "Academia Policial",
+      "frecuency type": "Frecuencia semanal",
+      "frecuency": 0,
+      "week days": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          28
         ]
       ],
       "time": [
         16,
         0,
         18,
-        15
+        46
       ],
-      "type": "Práctica de Conducción",
+      "type": "Persecusión y aprehensión vehicular",
       "resources": {
-        "Conos": 0,
-        "Instructores": 0,
+        "Oficiales de alto rango": 3,
+        "Instructores": 9,
         "Moto Mary-Policía": 0,
-        "Vehículo Interceptor": 0,
-        "Vehículo Z4": 0,
-        "balas balas": 2,
-        "bella vida": 6
+        "Vehículo Interceptor": 3,
+        "Vehículo Z4": 6,
+        "Helicóptero": 1
       },
-      "place": "Pista de automovilismo",
+      "place": "Zona 2",
       "frecuency type": "Evento único",
       "frecuency": 0,
       "week days": [
@@ -97,27 +443,167 @@
         [
           2026,
           2,
-          6
+          24
         ]
       ],
       "time": [
-        14,
-        21,
-        16,
+        11,
+        45,
+        18,
+        47
+      ],
+      "type": "Intervención a Domicilio",
+      "resources": {
+        "AMP": 0,
+        "Chalecos Antibalas": 9,
+        "Equipaje Táctico": 2,
+        "Escopetas": 0,
+        "Instructores": 4,
+        "Oficiales de alto rango": 1,
+        "Pistolas": 9,
+        "Vehículo Z4": 5,
+        "balas": 1
+      },
+      "place": "Domicilio preparado",
+      "frecuency type": "Evento único",
+      "frecuency": 0,
+      "week days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0
+      ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          4
+        ]
+      ],
+      "time": [
+        17,
+        0,
+        18,
+        0
+      ],
+      "type": "Manejo de Helicóptero",
+      "resources": {
+        "Helicóptero": 0,
+        "Instructores": 2,
+        "Manuales de conducción para agentes": 8,
+        "Proyectores": 1
+      },
+      "place": "Aula 1",
+      "frecuency type": "Evento único",
+      "frecuency": 0,
+      "week days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          17
+        ]
+      ],
+      "time": [
+        5,
+        0,
+        6,
+        0
+      ],
+      "type": "Entrenamiento Físico",
+      "resources": {
+        "Bicicletas": 0,
+        "Entrenadores de Defensa Personal": 0,
+        "Entrenadores Físicos": 1
+      },
+      "place": "Centro de entrenamiento",
+      "frecuency type": "Evento único",
+      "frecuency": 0,
+      "week days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          19
+        ],
+        [
+          2026,
+          2,
+          20
+        ],
+        [
+          2026,
+          2,
+          21
+        ],
+        [
+          2026,
+          2,
+          23
+        ],
+        [
+          2026,
+          2,
+          24
+        ],
+        [
+          2026,
+          2,
+          25
+        ],
+        [
+          2026,
+          2,
+          26
+        ],
+        [
+          2026,
+          2,
+          27
+        ]
+      ],
+      "time": [
+        0,
+        30,
+        19,
+        31
       ],
       "type": "Práctica de Conducción",
       "resources": {
         "Conos": 0,
-        "Instructores": 0,
+        "Instructores": 3,
         "Moto Mary-Policía": 0,
-        "Vehículo Interceptor": 0,
-        "Vehículo Z4": 1,
-        "balas balas": 2,
-        "bella vida": 6
+        "Vehículo Interceptor": 3,
+        "Vehículo Z4": 3,
+        "Dragon Blanco de Ojos Azules": 3
       },
-      "place": "Centro de entrenamiento",
-      "frecuency type": "Evento único",
+      "place": "Pista de automovilismo",
+      "frecuency type": "Rango de días",
       "frecuency": 0,
       "week days": [
         0,
@@ -152,11 +638,13 @@
     "Proyectores": 5,
     "Vehículo Z4": 30,
     "Vehículo Interceptor": 5,
-    "balas balas": 2,
-    "bella vida": 6
+    "balas": 3,
+    "mi nueba bida": 3,
+    "Dragon Blanco de Ojos Azules": 3
   },
   {
-    "balas balas": 2,
-    "bella vida": 6
+    "balas": 3,
+    "mi nueba bida": 3,
+    "Dragon Blanco de Ojos Azules": 3
   }
 ]

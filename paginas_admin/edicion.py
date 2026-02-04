@@ -56,6 +56,7 @@ def edicion():
                 '>🚫 NO PUEDE EDITAR NI ELIMINAR UN EVENTO EN TRANSCURSO  
                 </div>""",unsafe_allow_html=True)
         elif st.session_state.events[options.index(selection)].date[0] <= actual_date:
+            index = options.index(selection)
             if st.button(label="Eliminar",width="stretch",help="Los eventos que han finalizado pueden ser eliminados"):
                 st.session_state.edition_values = (index,False,True)
                 cambiar_pagina("edicion")
