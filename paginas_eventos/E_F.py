@@ -32,7 +32,7 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
         time_variable2 = editable_event.time[1]
         frecuency_variable = editable_event.frecuency
         first_date_variable = editable_event.date[0]
-        tuple_date_variable = editable_event.date[0]
+        tuple_date_variable = (editable_event.date[0],editable_event.date[-1])
         if ef_variable > 0:
             default = "Físico"
             ed_variable = 1
@@ -115,7 +115,8 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
         first_date = range_input[0]
         time_1 = col8.time_input("Hora de inicio", value= time_variable1, help=time1_help)
         time_2 = col8.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
-        if len(range_input) == 2:
+        st.write(range_input)
+        if len(range_input) == 2 and range_input[0] != range_input[-1]:
             date_input = range_addition(range_input)
         else:
             date_input = [first_date]
@@ -184,6 +185,7 @@ def entrenamiento_fisico(editor=False,editable_event=None, index=None):
         "Entrenadores Físicos": ef        
     }
     dict.update(custom_dict)
+    st.write(frecuency_type)
     new_event = Event(date_input,(time_1,time_2),"Entrenamiento Físico",dict,place,frecuency_type,frecuency,attempts)
     
 #==========|   BUSQUEDA DE COLISIONES E INVALIDACION DEL EVENTO   |===============================================================================

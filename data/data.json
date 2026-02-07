@@ -100,6 +100,18 @@
       2026,
       2,
       18,
+      9
+    ],
+    [
+      2026,
+      2,
+      18,
+      1
+    ],
+    [
+      2026,
+      2,
+      19,
       1
     ],
     [
@@ -111,7 +123,7 @@
     [
       2026,
       2,
-      19,
+      20,
       1
     ],
     [
@@ -119,12 +131,6 @@
       2,
       20,
       8
-    ],
-    [
-      2026,
-      2,
-      20,
-      1
     ],
     [
       2026,
@@ -142,13 +148,13 @@
       2026,
       2,
       24,
-      8
+      5
     ],
     [
       2026,
       2,
       24,
-      5
+      8
     ],
     [
       2026,
@@ -160,12 +166,6 @@
       2026,
       2,
       26,
-      8
-    ],
-    [
-      2026,
-      2,
-      27,
       8
     ],
     [
@@ -580,11 +580,6 @@
           2026,
           2,
           26
-        ],
-        [
-          2026,
-          2,
-          27
         ]
       ],
       "time": [
@@ -599,11 +594,43 @@
         "Instructores": 3,
         "Moto Mary-Policía": 0,
         "Vehículo Interceptor": 3,
-        "Vehículo Z4": 3,
-        "Dragon Blanco de Ojos Azules": 3
+        "Vehículo Z4": 3
       },
       "place": "Pista de automovilismo",
       "frecuency type": "Rango de días",
+      "frecuency": 0,
+      "week days": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "date": [
+        [
+          2026,
+          2,
+          18
+        ]
+      ],
+      "time": [
+        0,
+        15,
+        14,
+        2
+      ],
+      "type": "Entrenamiento Físico",
+      "resources": {
+        "Bicicletas": 0,
+        "Entrenadores de Defensa Personal": 0,
+        "Entrenadores Físicos": 1
+      },
+      "place": "Centro de entrenamiento",
+      "frecuency type": "Evento único",
       "frecuency": 0,
       "week days": [
         0,
@@ -639,12 +666,10 @@
     "Vehículo Z4": 30,
     "Vehículo Interceptor": 5,
     "balas": 3,
-    "mi nueba bida": 3,
-    "Dragon Blanco de Ojos Azules": 3
+    "mi nueba bida": 3
   },
   {
     "balas": 3,
-    "mi nueba bida": 3,
-    "Dragon Blanco de Ojos Azules": 3
+    "mi nueba bida": 3
   }
 ]

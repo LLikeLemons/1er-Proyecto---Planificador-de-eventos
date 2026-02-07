@@ -35,7 +35,7 @@ def capacitacion_swat(editor=False,editable_event=None, index=None):
         time_variable2 = editable_event.time[1]
         frecuency_variable = editable_event.frecuency
         first_date_variable = editable_event.date[0]
-        tuple_date_variable = editable_event.date[0]
+        tuple_date_variable = (editable_event.date[0],editable_event.date[-1])
         defaultcr = [] 
         custom_keys = st.session_state.custom_resources.keys()
         for k in editable_event.resources.keys():
@@ -104,7 +104,7 @@ def capacitacion_swat(editor=False,editable_event=None, index=None):
         first_date = range_input[0]
         time_1 = tab3.time_input("Hora de inicio", value= time_variable1, help=time1_help)
         time_2 = tab3.time_input("Hora de conclusión", value= time_variable2, help=time2_help)
-        if len(range_input) == 2:
+        if len(range_input) == 2 and range_input[0] != range_input[-1]:
             date_input = range_addition(range_input)
         else:
             date_input = [first_date]

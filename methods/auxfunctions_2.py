@@ -65,7 +65,7 @@ def load_json(filename: str = "data.json", encoding: str = "utf-8"):
 
 #=====|   ALMACEN DE RECURSOS   |========================================================================================================================
 
-def st_resources_edit(resources,amount,delete=False):
+def st_resources_edit(resources,amount=None,delete=False):
     if not delete:
         st.session_state.resources[resources] = amount
         st.session_state.custom_resources[resources] = amount
